@@ -1,0 +1,2083 @@
+/* ==========================================================================
+   CODEWAVE - HOJA DE ESTILOS GENERAL
+   --------------------------------------------------------------------------
+   ÍNDICE (usa Ctrl+F / Buscar con el número o el nombre de la sección):
+
+   1.  FUENTES
+   2.  RESET Y BASE               (compartido en todas las páginas)
+   3.  HEADER Y NAV                (compartido en todas las páginas)
+   4.  FOOTER                      (compartido en todas las páginas)
+   5.  PÁGINA: INICIO              -> index.html          (body.page-inicio)
+   6.  PÁGINA: ENCUESTA            -> formulario.html     (body.page-encuesta)
+   7.  PÁGINA: RECURSOS            -> recursos.html       (body.pagina-recursos)
+   8.  PÁGINA: RECOMENDACIONES     -> recomendaciones.html (body.page-recomendaciones)
+   9.  PÁGINA: CONTACTO            -> contactos.html      (body.page-contacto)
+   10. PÁGINA: REPRODUCTOR         -> reproductor.html    (body.page-reproductor)
+   11. INTERACTIVIDAD              (menú móvil, animaciones, botón subir)
+   12. RESPONSIVE GENERAL          (reglas que no son de una sola página)
+
+   --------------------------------------------------------------------------
+   CÓMO ESTÁ ORGANIZADA CADA PÁGINA (secciones 5 a 9):
+   Dentro de cada página vas a encontrar bloques con un título tipo:
+
+       /* ---- NOMBRE DEL BLOQUE ---- */
+
+   Por ejemplo, en RECURSOS y RECOMENDACIONES vas a ver, en este orden
+       HERO            -> el banner de color de arriba (título + texto + botón)
+       PANEL BLANCO    -> la tarjeta blanca grande que envuelve el contenido
+       CONTENIDO       -> lo que va dentro del panel (carrusel, tarjetas, etc.)
+       RESPONSIVE      -> los ajustes de esa misma página para pantallas chicas
+         (va SIEMPRE al final de la página a la que pertenece, no en la
+          sección 11, para que todo lo de una página quede junto)
+
+   REGLA DE ORO: todo lo que sea específico de una página va SIEMPRE
+   precedido por su clase de body (ej: "body.page-recursos .tarjeta").
+   Así, aunque dos páginas usen el mismo nombre de clase, nunca se pisan
+   los estilos entre sí. Lo único sin ese "candado" es lo realmente
+   compartido (secciones 2, 3 y 4).
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. FUENTES
+   ========================================================================== */
+@font-face {
+    font-family: 'Lobster Two';
+    src: url('LobsterTwo-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+
+/* ==========================================================================
+   2. RESET Y BASE (compartido)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #f5f7fa;
+}
+
+body {
+    background: linear-gradient(180deg, #114b5f 30%, #114b5f 30%, #75eef9 50%, #f5f7fa 100%);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* evita cualquier barra de desplazamiento horizontal */
+}
+
+
+/* ==========================================================================
+   3. HEADER Y NAV (compartido en todas las páginas)
+   ========================================================================== */
+header {
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 2px 10px;
+}
+
+.header-buttons {
+    color: #ffffff;
+    display: flex;
+    gap: 10px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+}
+
+.slogan {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+nav a.active {
+    border-bottom: 3px solid #114b5f;
+    color: #114b5f;
+}
+
+
+/* ==========================================================================
+   4. FOOTER (compartido en todas las páginas)
+   -- Todas las páginas usan este mismo footer. Si alguna página necesita
+      verse distinta, se sobreescribe puntualmente dentro de su propia
+      sección (ver ".pagina-recursos footer" más abajo, por ejemplo),
+      nunca modificando estas reglas de acá directamente.
+   ========================================================================== */
+footer {
+    color: #114b5f;
+    background-color: #f5f7fa;
+    padding: 15px 5px;
+    text-align: center;
+    margin-top: auto;
+}
+
+
+/* ==========================================================================
+   5. PÁGINA: INICIO (index.html) — scope: body.page-inicio
+   ========================================================================== */
+
+/* ---- FONDO DE LA PÁGINA DE INICIO ----
+   El degradado del body mide lo mismo que la pantalla y por defecto se REPITE.
+   Al crecer el hero (por el carrusel) la página quedó más alta que la pantalla,
+   el degradado volvió a empezar en azul oscuro justo detrás del footer, y como
+   el texto del footer es de ese mismo azul (#114b5f) no se veía.
+   Con no-repeat + color de fondo claro, lo que queda debajo del degradado es
+   #f5f7fa (el mismo color donde termina el degradado) y el footer se lee bien.
+   El footer NO se modificó. */
+body.page-inicio {
+    background-repeat: no-repeat;
+    background-color: #f5f7fa;
+}
+
+/* ---- HERO (portada con título de bienvenida y galería de imágenes) ---- */
+body.page-inicio .hero {
+    background:
+        linear-gradient(100deg, rgba(17,75,95,0.82), rgba(2,128,144,0.82)),
+        url('FOTO SONIDO.jpg') center/cover no-repeat;
+    padding: 70px 70px 100px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+body.page-inicio .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 1100px;
+    /* sin alto fijo: ahora el hero crece según texto + carrusel */
+}
+
+body.page-inicio .hero-text {
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+body.page-inicio .hero-title {
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    max-width: 100%;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    margin-bottom: 20px;
+    letter-spacing: clamp(6px, 4vw, 50px);
+    margin-top: -30px;
+}
+
+body.page-inicio .hero-intro {
+    text-align: justify;
+    text-align-last: center;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 550px;
+}
+
+/* ---- CARRUSEL DE IMÁGENES (reemplaza a la antigua galería de 3 fotos) ----
+   Estructura en index.html:
+     .banner-carrusel            -> caja general (posición de flechas y puntos)
+       .carrusel-ventana         -> "ventana" que recorta: solo se ve 1 slide
+         .carrusel-pista         -> tira con todos los slides en fila; JS la desplaza
+           .carrusel-slide       -> un slide = una imagen
+       .carrusel-flecha          -> botones ‹ ›
+       .carrusel-puntos          -> puntitos de abajo (uno por slide)
+   ---------------------------------------------------------------------- */
+body.page-inicio .banner-carrusel {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+}
+
+body.page-inicio .carrusel-ventana {
+    overflow: hidden;
+    height: 250px;                 /* <- ALTO del carrusel (cámbialo aquí) */
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+body.page-inicio .carrusel-pista {
+    display: flex;
+    height: 100%;
+    transition: transform 0.6s ease;   /* <- velocidad del deslizamiento */
+}
+
+body.page-inicio .carrusel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+}
+
+body.page-inicio .carrusel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;             /* "cover" = llena todo el marco (recorta si hace falta); "contain" = se ve completa con espacios */
+    display: block;
+}
+
+/* ---- Flechas ---- */
+body.page-inicio .carrusel-flecha {
+    position: absolute;
+    top: calc(330px / 2);          /* mitad del alto de la ventana */
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: #114b5f;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: background 0.2s ease;
+    z-index: 2;
+}
+
+body.page-inicio .carrusel-flecha:hover {
+    background: #ffffff;
+}
+
+body.page-inicio .carrusel-flecha:focus-visible,
+body.page-inicio .carrusel-punto:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
+}
+
+body.page-inicio .carrusel-flecha-izq { left: 12px; }
+body.page-inicio .carrusel-flecha-der { right: 12px; }
+
+/* ---- Puntos de navegación ---- */
+body.page-inicio .carrusel-puntos {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+body.page-inicio .carrusel-punto {
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, width 0.3s ease;
+}
+
+body.page-inicio .carrusel-punto.activo {
+    background: #ffffff;
+    width: 26px;                   /* el punto activo se estira */
+    border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.page-inicio .carrusel-pista { transition: none; }
+}
+
+
+/* ==========================================================================
+   Estilos exclusivos de la página Diagnóstico (formulario.html)
+   Scope: body.page-encuesta — clases con prefijo dx-
+   Debe cargarse DESPUÉS de style.css
+   ========================================================================== */
+html body.page-encuesta {
+    background: linear-gradient(180deg, #07536a 30%, #5edbe7 48%, #f3fbfd 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+body.page-encuesta footer { margin-top: auto; }
+
+.dx-hero, .dx-panel { box-sizing: border-box; }
+
+/* ---------- HERO ---------- */
+.dx-hero {
+    width: min(1180px, calc(100% - 40px));
+    margin: 10px auto 18px;
+    padding: 28px 45px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    color: #fff;
+    background:
+        linear-gradient(110deg, rgba(25,128,157,.98), rgba(0,132,151,.86)),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0,60,80,.20);
+}
+.dx-hero-texto { position: relative; z-index: 2; max-width: 680px; }
+.dx-etiqueta-hero { font-size: 11px; letter-spacing: 2px; font-weight: 800; opacity: .85; }
+.dx-hero h1 {
+    margin: 4px 0 6px;
+    color: #fff;
+    font-family: "Lobster Two", "Times New Roman", serif;
+    font-size: 42px;
+    line-height: 1;
+}
+.dx-hero p { margin: 0 0 14px; color: #fff; font-size: 15px; line-height: 1.4; }
+.dx-hero-deco {
+    position: absolute; right: 75px; top: -18px;
+    font-size: 150px; line-height: 1;
+    color: rgba(255,255,255,.10);
+    transform: rotate(-10deg);
+}
+
+/* ---------- BOTONES ---------- */
+.dx-btn {
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 10px 22px;
+    border-radius: 24px;
+    background: #0b91aa;
+    color: #fff;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.dx-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 18px rgba(0,60,80,.22); background: #087d93; }
+.dx-btn:focus-visible, .dx-opcion:focus-visible, .dx-link:focus-visible { outline: 3px solid #5edbe7; outline-offset: 2px; }
+.dx-btn-borde { background: #fff; color: #087d93; border: 1px solid #b9e3ea; }
+.dx-btn-borde:hover { background: #effcff; }
+.dx-link {
+    background: none; border: none; cursor: pointer; font: inherit;
+    color: #087d93; font-weight: 700; font-size: 13px; padding: 6px 2px;
+}
+.dx-link:hover { text-decoration: underline; }
+
+/* ---------- PANEL ---------- */
+.dx-panel {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto 28px;
+    padding: 26px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,70,90,.16);
+    color: #526b75;
+}
+.dx-panel h2 { margin: 0; color: #104e66; font-size: 22px; line-height: 1.2; }
+.dx-panel h3 { margin: 0; color: #075570; font-size: 15px; }
+.dx-panel p { line-height: 1.55; font-size: 14px; }
+.dx-etiqueta { display: block; margin-bottom: 3px; color: #0790a5; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; }
+.dx-titulo { display: flex; align-items: center; gap: 14px; }
+.dx-num {
+    min-width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+    border-radius: 14px; background: #e1f7fa; font-size: 22px;
+}
+
+.dx-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 20px; }
+.dx-chip {
+    padding: 7px 14px; border-radius: 999px; background: #effcff;
+    border: 1px solid #d8eff3; color: #075570; font-size: 13px; font-weight: 600;
+}
+.dx-aviso { font-size: 12px !important; opacity: .8; margin: 18px 0 0; }
+
+/* ---------- PREGUNTAS ---------- */
+.dx-progreso-top { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #087d93; margin-bottom: 8px; }
+.dx-barra { height: 6px; background: #dff2f6; border-radius: 6px; overflow: hidden; margin-bottom: 22px; }
+.dx-barra-fill { height: 100%; width: 0; background: #0b91aa; border-radius: 6px; transition: width .35s ease; }
+.dx-enunciado:focus { outline: none; }
+.dx-ayuda { margin: 6px 0 18px; font-size: 13px !important; opacity: .85; }
+.dx-opciones { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.dx-opcion {
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    font: inherit; font-size: 14px; font-weight: 600; color: #104e66;
+    padding: 14px 16px; border-radius: 14px; cursor: pointer;
+    background: linear-gradient(135deg, #effcff, #e4f5fb);
+    border: 1px solid #d8eff3;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.dx-opcion:hover { transform: translateY(-2px); border-color: #0b91aa; }
+.dx-opcion.sel { border-color: #0b91aa; box-shadow: 0 0 0 2px #0b91aa inset; background: #e1f7fa; }
+.dx-emoji {
+    width: 38px; height: 38px; flex: 0 0 38px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: #0b91aa; font-size: 18px;
+}
+.dx-nav { margin-top: 18px; }
+
+/* ---------- RESULTADO ---------- */
+.dx-res-cabecera {
+    padding: 20px 22px; border-radius: 16px; margin-bottom: 18px;
+    background: linear-gradient(110deg, #19809d, #008497); color: #fff;
+}
+.dx-res-cabecera .dx-etiqueta { color: #bdf3f9; }
+.dx-res-cabecera h2 { color: #fff; font-size: 26px; }
+.dx-res-cabecera p { color: #fff; margin: 8px 0 0; }
+.dx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.dx-card {
+    padding: 18px; border-radius: 14px;
+    background: linear-gradient(135deg, #effcff, #e4f5fb);
+    border: 1px solid #d8eff3;
+}
+.dx-card h3 { margin-bottom: 12px; }
+.dx-card p { margin: 0 0 10px; }
+.dx-ancho { grid-column: 1 / -1; }
+
+.dx-fila { margin-bottom: 12px; }
+.dx-fila-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #075570; margin-bottom: 5px; }
+.dx-nivel { font-size: 11px; font-weight: 800; padding: 2px 9px; border-radius: 999px; }
+.dx-nivel.alta { background: #ffe3e0; color: #a3301f; }
+.dx-nivel.media { background: #fff1cf; color: #8a5a00; }
+.dx-nivel.baja { background: #d9f5e6; color: #1c6b43; }
+.dx-fila .dx-barra { margin: 0; height: 9px; background: #fff; }
+.dx-fila .dx-barra-fill.alta { background: #e0624f; }
+.dx-fila .dx-barra-fill.media { background: #f0b132; }
+.dx-fila .dx-barra-fill.baja { background: #3fb67c; }
+
+.dx-sonido { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+.dx-play {
+    width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; border: none; cursor: pointer;
+    background: #0b91aa; color: #fff; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+}
+.dx-play:hover { background: #087d93; }
+.dx-play:focus-visible { outline: 3px solid #5edbe7; outline-offset: 2px; }
+.dx-ondas { display: flex; align-items: flex-end; gap: 3px; height: 22px; }
+.dx-ondas span { width: 4px; height: 5px; border-radius: 2px; background: #0b91aa; }
+.dx-sonido.sonando .dx-ondas span { animation: dx-rebote .9s ease-in-out infinite; }
+.dx-sonido.sonando .dx-ondas span:nth-child(2) { animation-delay: .15s; }
+.dx-sonido.sonando .dx-ondas span:nth-child(3) { animation-delay: .3s; }
+.dx-sonido.sonando .dx-ondas span:nth-child(4) { animation-delay: .45s; }
+@keyframes dx-rebote { 0%,100% { height: 5px; } 50% { height: 20px; } }
+.dx-nota { font-size: 12px !important; opacity: .8; }
+
+.dx-bloque-num { font-size: 30px; font-weight: 900; color: #087d93; line-height: 1; }
+.dx-bloque-num small { font-size: 14px; font-weight: 700; color: #526b75; }
+.dx-lista { margin: 0; padding-left: 20px; }
+.dx-lista li { margin-bottom: 8px; line-height: 1.5; font-size: 14px; }
+
+.dx-acciones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
+.dx-copiado { font-size: 12px; color: #1c6b43; font-weight: 700; }
+
+[hidden] { display: none !important; }
+
+.dx-aparece { animation: dx-entra .4s ease both; }
+@keyframes dx-entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+    .dx-aparece, .dx-sonido.sonando .dx-ondas span { animation: none; }
+    .dx-barra-fill, .dx-opcion, .dx-btn { transition: none; }
+}
+
+@media (max-width: 800px) {
+    .dx-hero { padding: 24px 22px; }
+    .dx-hero-deco { display: none; }
+    .dx-hero h1 { font-size: 34px; }
+    .dx-panel { width: calc(100% - 20px); padding: 18px; }
+    .dx-opciones, .dx-grid { grid-template-columns: 1fr; }
+    .dx-res-cabecera h2 { font-size: 22px; }
+}
+/* ==========================================================================
+   7. PÁGINA: RECURSOS (recursos.html) — scope: body.pagina-recursos
+   ========================================================================== */
+body.pagina-recursos {
+    margin: 0;
+    min-height: 100vh; /* Asegura que cubra como mínimo el alto de la pantalla */
+    background: linear-gradient(
+        180deg,
+        #07536a 0px,       /* Inicio del azul oscuro en la cabecera */
+        #07536a 180px,     /* Mantiene el tono oscuro tras la zona del hero */
+        #5edbe7 450px,     /* Transición suave hacia el tono claro */
+        #f3fbfd 100%       /* Extiende el fondo claro suavemente hacia el final de la página */
+    );
+    background-attachment: fixed; /* Opcional: fija el degradado al hacer scroll */
+}
+
+
+/* ---- HERO (banner superior en degradado: etiqueta + título + texto + botón) ---- */
+.pagina-recursos .recursos-hero {
+    width: min(1180px, calc(100% - 40px));
+    height: 160px;
+    margin: 10px auto 18px;
+    padding: 25px 45px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(25, 128, 157, 0.98),
+            rgba(0, 132, 151, .86)
+        ),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0, 60, 80, .20);
+}
+
+.pagina-recursos .hero-texto {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.pagina-recursos .hero-etiqueta {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: .85;
+}
+
+.pagina-recursos .hero-texto h1 {
+    margin: 4px 0 3px;
+    color: white;
+    font-family:
+        "Lobster Two",
+        "Times New Roman",
+        serif;
+    font-size: 42px;
+    line-height: 1;
+}
+
+.pagina-recursos .hero-texto p {
+    margin: 0 0 13px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.pagina-recursos .btn-explorar {
+    display: inline-block;
+    padding: 7px 17px;
+    border-radius: 22px;
+    background: white;
+    color: #08728a;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .25s ease;
+}
+
+.pagina-recursos .btn-explorar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0,0,0,.18);
+}
+
+.pagina-recursos .hero-decoracion {
+    position: absolute;
+    right: 75px;
+    top: -18px;
+    font-size: 150px;
+    line-height: 1;
+    color: rgba(255,255,255,.10);
+    transform: rotate(-10deg);
+}
+
+
+/* ---- PANEL BLANCO (la tarjeta blanca grande que envuelve todo el contenido) ---- */
+.pagina-recursos .recursos-panel {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto 10px;
+    padding: 14px 18px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 70, 90, .16);
+}
+
+
+/* ---- TÍTULO PRINCIPAL DEL PANEL ("01 · CONCENTRACIÓN · ¿Cómo...?") ---- */
+.pagina-recursos .titulo-bloque {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.pagina-recursos .numero-seccion {
+    min-width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #e1f7fa;
+    color: #087d93;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.pagina-recursos .etiqueta-seccion {
+    display: block;
+    margin-bottom: 2px;
+    color: #0790a5;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.pagina-recursos h2 {
+    margin: 0;
+    color: #104e66;
+    font-size: 19px;
+    line-height: 1.15;
+}
+
+.pagina-recursos .descripcion {
+    margin: 8px 0 8px;
+    max-width: 950px;
+    color: #526b75;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* ---- TRES BENEFICIOS (sincronización neuronal / bloqueo / ansiedad) ---- */
+.pagina-recursos .beneficios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.pagina-recursos .beneficio {
+    min-height: 90px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            #effcff,
+            #e4f5fb
+        );
+    border: 1px solid #d8eff3;
+}
+
+.pagina-recursos .beneficio:nth-child(2) {
+    background:
+        linear-gradient(
+            135deg,
+            #f0f6ff,
+            #e7f0fc
+        );
+}
+
+.pagina-recursos .beneficio:nth-child(3) {
+    background:
+        linear-gradient(
+            135deg,
+            #effbf9,
+            #e4f7f3
+        );
+}
+
+.pagina-recursos .icono {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #0b91aa;
+    font-size: 18px;
+}
+
+.pagina-recursos .beneficio h3 {
+    margin: 1px 0 5px;
+    color: #075570;
+    font-size: 13px;
+}
+
+.pagina-recursos .beneficio p {
+    margin: 0;
+    color: #526b75;
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+
+/* ---- BLOQUE DE INVESTIGACIÓN (Universidad de Buffalo) ---- */
+.pagina-recursos .investigacion {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 15px;
+    background:
+        linear-gradient(
+            110deg,
+            #edf7fd,
+            #f2fbfd
+        );
+    border: 1px solid #dceff5;
+}
+
+.pagina-recursos .investigacion-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.pagina-recursos .icono-investigacion {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #087d98;
+    font-size: 17px;
+}
+
+.pagina-recursos .investigacion h2 {
+    font-size: 16px;
+}
+
+.pagina-recursos .investigacion-info p {
+    margin: 4px 0 0;
+    color: #526b75;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* ---- PASOS DE LA INVESTIGACIÓN (1. Preparación / 2. Atención / 3. Evaluación) ---- */
+.pagina-recursos .pasos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.pagina-recursos .paso {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 7px 10px;
+    background: white;
+    border-radius: 11px;
+}
+
+.pagina-recursos .paso > span {
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #159dc1;
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.pagina-recursos .paso h3 {
+    margin: 1px 0 3px;
+    color: #075570;
+    font-size: 12px;
+}
+
+.pagina-recursos .paso p {
+    margin: 0;
+    color: #60747c;
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+/* ---- RESPONSIVE DE ESTA PÁGINA (pantallas angostas / celular) ---- */
+@media (max-width: 900px) {
+
+    .pagina-recursos .recursos-hero {
+        height: auto;
+        min-height: 150px;
+        padding: 25px 30px;
+    }
+
+    .pagina-recursos .hero-decoracion {
+        right: 20px;
+    }
+
+    .pagina-recursos .beneficios {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-recursos .beneficio {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .pagina-recursos .recursos-hero {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+        padding: 25px 20px;
+    }
+
+    .pagina-recursos .hero-texto h1 {
+        font-size: 34px;
+    }
+
+    .pagina-recursos .hero-decoracion {
+        display: none;
+    }
+
+    .pagina-recursos .recursos-panel {
+        width: calc(100% - 20px);
+        padding: 14px;
+    }
+
+    .pagina-recursos .pasos {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---- PANTALLAS BAJAS (laptops de poca altura): se compacta un poco más para evitar la barra de scroll ---- */
+@media (min-width: 901px) and (max-height: 700px) {
+    /* se oculta solo el aviso "Toca cada tarjeta..." (el texto principal se mantiene) */
+    .pagina-recursos .bloque-concentracion .descripcion:nth-of-type(2) {
+        display: none;
+    }
+}
+
+
+/* ==========================================================================
+   8. PÁGINA: RECOMENDACIONES (recomendaciones.html) — scope: body.page-recomendaciones
+   -- Usa el mismo patrón visual de Hero + Panel blanco que RECURSOS (sección 7),
+      pero dentro del panel va el carrusel de tarjetas en vez del bloque de
+      información/investigación.
+   ========================================================================== */
+
+/* ---- HERO ----
+   Estas reglas son A PROPÓSITO idénticas a ".pagina-recursos .recursos-hero"
+   de la sección 7 (mismo alto, mismo padding, misma tipografía) para que las
+   dos páginas se vean parejas. Si cambias una, probablemente quieras
+   cambiar la otra también. */
+body.page-recomendaciones .recomendaciones-hero {
+    width: min(1180px, calc(100% - 40px));
+    height: 160px;
+    margin: 10px auto 18px;
+    padding: 25px 45px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(110deg, rgba(8, 75, 94, .98), rgba(0, 132, 151, .86)),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0, 60, 80, .20);
+}
+
+body.page-recomendaciones .hero-texto {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.pagina-recomendaciones .recomendaciones-hero {
+    width: min(1180px, calc(100% - 40px));
+    height: 160px;
+    margin: 22px auto 18px;
+    padding: 25px 45px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(25, 128, 157, 0.98),
+            rgba(0, 132, 151, .86)
+        ),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0, 60, 80, .20);
+}
+
+body.page-recomendaciones .hero-etiqueta {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: .85;
+}
+
+body.page-recomendaciones .hero-texto h1 {
+    margin: 4px 0 3px;
+    color: white;
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+    font-size: 42px;
+    line-height: 1;
+}
+
+body.page-recomendaciones .hero-texto p {
+    margin: 0 0 13px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+body.page-recomendaciones .btn-explorar {
+    display: inline-block;
+    padding: 7px 17px;
+    border-radius: 22px;
+    background: white;
+    color: #08728a;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .25s ease;
+}
+
+body.page-recomendaciones .btn-explorar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0,0,0,.18);
+}
+
+body.page-recomendaciones .hero-decoracion {
+    position: absolute;
+    right: 75px;
+    top: -18px;
+    font-size: 150px;
+    line-height: 1;
+    color: rgba(255,255,255,.10);
+    transform: rotate(-10deg);
+}
+
+
+/* ---- PANEL BLANCO (más compacto que el de Recursos, a propósito,
+        para que el carrusel no ocupe tanto espacio vertical) ---- */
+body.page-recomendaciones .recomendaciones-panel {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto 24px;
+    padding: 10px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 70, 90, .16);
+}
+
+/* ---- TÍTULO DEL PANEL ("01 · RECOMENDACIONES · Elige la música...") ---- */
+body.page-recomendaciones .titulo-bloque {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+body.page-recomendaciones .numero-seccion {
+    min-width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #e1f7fa;
+    color: #087d93;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+body.page-recomendaciones .etiqueta-seccion {
+    display: block;
+    margin-bottom: 2px;
+    color: #0790a5;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+body.page-recomendaciones .titulo-bloque h2 {
+    margin: 0;
+    color: #104e66;
+    font-size: 14px;
+    line-height: 1.15;
+}
+
+
+/* ---- CARRUSEL: CONTENEDOR Y FLECHAS ---- */
+body.page-recomendaciones .carrusel-wrapper {
+    position: relative;
+    margin-top: 6px;
+}
+
+body.page-recomendaciones .grid-recomendaciones {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 4px 8px 6px;
+
+    /* Oculta la barra de scroll pero conserva el desplazamiento
+       (funciona igual con las flechas y los puntos) */
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge viejo */
+}
+
+body.page-recomendaciones .grid-recomendaciones::-webkit-scrollbar {
+    display: none;              /* Chrome/Edge/Safari */
+}
+
+/* Flechas flotando sobre los bordes del carrusel */
+body.page-recomendaciones .flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #114b5f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+body.page-recomendaciones .flecha:hover {
+    background-color: #114b5f;
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.08);
+}
+
+body.page-recomendaciones .flecha-izq {
+    left: -5px;
+}
+
+body.page-recomendaciones .flecha-der {
+    right: -5px;
+}
+
+
+/* ---- CARRUSEL: TARJETAS (una por cada tip de música/frecuencia) ---- */
+body.page-recomendaciones .tarjeta {
+    position: relative;
+    flex: 0 0 auto;
+    width: 165px;
+    scroll-snap-align: start;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px 14px 8px;
+    box-shadow: 0 4px 14px rgba(17,75,95,0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Franja de color arriba de cada tarjeta, distinta para cada tip */
+body.page-recomendaciones .tarjeta::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #114b5f;
+}
+
+body.page-recomendaciones .tarjeta:nth-child(1)::before { background-color: #114b5f; }
+body.page-recomendaciones .tarjeta:nth-child(2)::before { background-color: #028090; }
+body.page-recomendaciones .tarjeta:nth-child(3)::before { background-color: #2c9f90; }
+body.page-recomendaciones .tarjeta:nth-child(4)::before { background-color: #3b6e8f; }
+body.page-recomendaciones .tarjeta:nth-child(5)::before { background-color: #4573e0; }
+body.page-recomendaciones .tarjeta:nth-child(6)::before { background-color: #45b3c2; }
+
+body.page-recomendaciones .tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(17,75,95,0.18);
+}
+
+body.page-recomendaciones .tarjeta-icono {
+    width: 38px;
+    height: 38px;
+    margin: 0 auto 4px;
+    border-radius: 50%;
+    background-color: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+}
+
+body.page-recomendaciones .tarjeta h3 {
+    color: #114b5f;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    margin-bottom: 3px;
+}
+
+body.page-recomendaciones .tarjeta p {
+    text-align: left;
+    line-height: 1.3;
+    font-size: 0.72rem;
+    flex: 1;
+}
+
+/* ---- BOTÓN "ESCUCHAR" (abre en pestaña nueva ejemplos del género/tip) ---- */
+body.page-recomendaciones .btn-escuchar {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 11px;
+    border-radius: 18px;
+    background-color: #114b5f;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-align: center;
+    align-self: center;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.page-recomendaciones .btn-escuchar:hover {
+    background-color: #028090;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(17,75,95,0.25);
+}
+
+body.page-recomendaciones .btn-escuchar:focus-visible {
+    outline: 2px solid #114b5f;
+    outline-offset: 2px;
+}
+
+
+/* ---- CARRUSEL: PUNTOS DE NAVEGACIÓN (debajo de las tarjetas) ---- */
+body.page-recomendaciones .carrusel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 2px;
+}
+
+body.page-recomendaciones .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #c9dbe0;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+body.page-recomendaciones .dot:hover {
+    background-color: #114b5f;
+    transform: scale(1.2);
+}
+
+
+/* ---- RESPONSIVE DE ESTA PÁGINA (pantallas angostas / celular) ----
+   Mismos puntos de quiebre (900px y 650px) que usa Recursos, para que
+   las dos páginas cambien de tamaño juntas y de forma pareja. */
+@media (max-width: 900px) {
+
+    body.page-recomendaciones .recomendaciones-hero {
+        height: auto;
+        min-height: 150px;
+        padding: 25px 30px;
+    }
+
+    body.page-recomendaciones .hero-decoracion {
+        right: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    body.page-recomendaciones .recomendaciones-hero {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+        padding: 25px 20px;
+    }
+
+    body.page-recomendaciones .hero-texto h1 {
+        font-size: 34px;
+    }
+
+    body.page-recomendaciones .hero-decoracion {
+        display: none;
+    }
+
+    body.page-recomendaciones .recomendaciones-panel {
+        width: calc(100% - 20px);
+        padding: 10px;
+    }
+}
+
+
+/* ==========================================================================
+   9. PÁGINA: CONTACTO (contactos.html) — scope: body.page-contacto
+   ========================================================================== */
+
+/* ---- BANNER (título "Contáctanos" arriba de la página) ---- */
+body.page-contacto .banner {
+    background:
+        linear-gradient(100deg, rgba(47, 170, 211, 0.82), rgba(2,128,144,0.82)),
+        url('FOTO SONIDO.jpg') center/cover no-repeat;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+body.page-contacto .contactos {
+    width: min(1180px, calc(100% - 40px));
+    height: 160px;
+    margin: 10px auto 18px;
+    padding: 10px 45px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(
+            110deg,
+            rgba(25, 128, 157, 0.98),
+            rgba(0, 132, 151, .86)
+        ),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0, 60, 80, .20);
+}
+
+body.page-contacto .contactos .hero-texto {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+body.page-contacto .contactos .hero-etiqueta {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: .85;
+}
+
+body.page-contacto .contactos .hero-texto h1 {
+    margin: 4px 0 3px;
+    color: white;
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+    font-size: 42px;
+    line-height: 1;
+}
+
+body.page-contacto .contactos .hero-texto p {
+    margin: 0 0 13px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+body.page-contacto .contactos .btn-explorar {
+    display: inline-block;
+    padding: 7px 17px;
+    border-radius: 22px;
+    background: white;
+    color: #08728a;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .25s ease;
+}
+
+body.page-contacto .contactos .btn-explorar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0,0,0,.18);
+}
+
+body.page-contacto .contactos .hero-decoracion {
+    position: absolute;
+    right: 75px;
+    top: -18px;
+    font-size: 150px;
+    line-height: 1;
+    color: rgba(255,255,255,.10);
+    transform: rotate(-10deg);
+}
+
+@media (max-width: 900px) {
+    body.page-contacto .contactos {
+        height: auto;
+        min-height: 150px;
+        padding: 25px 30px;
+    }
+
+    body.page-contacto .contactos .hero-decoracion {
+        right: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    body.page-contacto .contactos {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+        padding: 25px 20px;
+    }
+
+    body.page-contacto .contactos .hero-texto h1 {
+        font-size: 34px;
+    }
+
+    body.page-contacto .contactos .hero-decoracion {
+        display: none;
+    }
+}
+
+body.page-contacto .banner h1 {
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+/* ---- LAYOUT GENERAL (columna izquierda + formulario a la derecha) ---- */
+body.page-contacto .contenido {
+    max-width: 900px;
+    margin: 20px auto 30px;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+
+body.page-contacto .columna-izquierda,
+body.page-contacto .form-wrapper {
+    flex: 1;
+    min-width: 280px;
+}
+
+body.page-contacto .columna-izquierda {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ---- EQUIPO (avatares circulares con nombre y rol) ---- */
+body.page-contacto .equipo {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 30px;
+    margin-left: -300px;
+}
+
+body.page-contacto .integrante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+body.page-contacto .avatar-circulo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+    margin-top: -20px;
+}
+
+body.page-contacto .avatar-circulo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+body.page-contacto .integrante-nombre {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #114b5f;
+}
+
+/* ---- MAPA (iframe de Google Maps con la ubicación) ---- */
+body.page-contacto .iframe-gps {
+    width: 100%;
+}
+
+body.page-contacto .iframe-gps iframe {
+    width: 760px !important;
+    height: 150px;
+    border: none;
+    margin-top: 5px;
+    margin-left: -290px;
+}
+
+/* ---- FORMULARIO DE CONTACTO / ENCUESTA (formulario propio en HTML) ---- */
+body.page-contacto .form-contacto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 22px 16px;
+    box-shadow: 0 6px 18px rgba(17, 75, 95, 0.12);
+    border-top: 6px solid #114b5f;
+}
+
+body.page-contacto .form-titulo {
+    color: #114b5f;
+    font-size: 1.15rem;
+    margin: 0 0 2px;
+    flex: 0 0 100%;
+}
+
+body.page-contacto .campo {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    flex: 1 1 calc(50% - 8px);   /* Nombre y Apellido: dos por fila */
+}
+
+/* ocupan todo el ancho de la tarjeta */
+body.page-contacto .campo-util,
+body.page-contacto .campo-calificacion,
+body.page-contacto .campo-comentario,
+body.page-contacto .form-acciones,
+body.page-contacto .mensaje-exito {
+    flex: 0 0 100%;
+}
+
+body.page-contacto label,
+body.page-contacto legend {
+    font-weight: bold;
+    color: #114b5f;
+    font-size: 0.92rem;
+    padding: 0;
+}
+
+body.page-contacto .obligatorio {
+    color: #d93025;
+}
+
+body.page-contacto input[type="text"],
+body.page-contacto textarea {
+    width: 100%;
+    padding: 7px 11px;
+    border: 1px solid #c3d3d9;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fafcfd;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.page-contacto input[type="text"]:focus,
+body.page-contacto textarea:focus {
+    outline: none;
+    border-color: #087d93;
+    box-shadow: 0 0 0 3px rgba(8, 125, 147, 0.18);
+}
+
+body.page-contacto input.invalido {
+    border-color: #d93025;
+}
+
+body.page-contacto textarea {
+    resize: vertical;
+    min-height: 56px;
+}
+
+body.page-contacto .error-campo {
+    color: #d93025;
+    font-size: 0.78rem;
+    min-height: 0;
+}
+
+body.page-contacto .error-campo:empty {
+    display: none;
+}
+
+/* Sí / No */
+body.page-contacto .opciones-fila {
+    display: flex;
+    gap: 22px;
+}
+
+body.page-contacto .grupo-opciones .opcion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    color: #333;
+    cursor: pointer;
+}
+
+body.page-contacto .grupo-opciones input[type="radio"] {
+    accent-color: #114b5f;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+/* Calificación 1 a 5 */
+body.page-contacto .escala {
+    display: flex;
+    gap: 8px;
+}
+
+body.page-contacto .estrella {
+    position: relative;
+    cursor: pointer;
+}
+
+body.page-contacto .estrella input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+body.page-contacto .estrella span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid #c3d3d9;
+    background: #ffffff;
+    color: #114b5f;
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body.page-contacto .estrella:hover span {
+    border-color: #087d93;
+}
+
+body.page-contacto .estrella input:checked + span {
+    background: #114b5f;
+    border-color: #114b5f;
+    color: #ffffff;
+}
+
+body.page-contacto .estrella input:focus-visible + span {
+    box-shadow: 0 0 0 3px rgba(8, 125, 147, 0.35);
+}
+
+/* Botones */
+body.page-contacto .form-acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 2px;
+}
+
+body.page-contacto .btn-enviar {
+    background-color: #114b5f;
+    color: white;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+body.page-contacto .btn-enviar:hover {
+    background-color: #087d93;
+}
+
+body.page-contacto .btn-limpiar {
+    background: none;
+    border: none;
+    color: #087d93;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+body.page-contacto .mensaje-exito {
+    color: #0b6b3a;
+    background: #e6f6ed;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+body.page-contacto .mensaje-exito[hidden] {
+    display: none;
+}
+
+/* ---- ENCUESTA EN PANTALLAS GRANDES (más ancha y desplazada a la derecha) ----
+   Solo desde 1301px (por debajo, las reglas de abajo la dejan en el flujo normal).
+   - 580px   -> ANCHO de la tarjeta
+   - left    -> cuánto se desplaza a la derecha (súbelo para moverla más) */
+@media (min-width: 1301px) {
+    body.page-contacto .contenido {
+        flex-wrap: nowrap;
+    }
+
+    body.page-contacto .columna-izquierda {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    body.page-contacto .form-wrapper {
+        flex: 0 0 650px;
+        width: 650px;
+        min-width: 0;
+        position: relative;
+        left: 300px;
+        margin-top: -20px;
+    }
+
+    /* "¿Te pareció útil?" y "Califica" quedan lado a lado */
+    body.page-contacto .campo-util,
+    body.page-contacto .campo-calificacion {
+        flex: 1 1 calc(50% - 8px);
+    }
+}
+
+/* Celular: todo en una sola columna */
+@media (max-width: 650px) {
+    body.page-contacto .campo {
+        flex-basis: 100%;
+    }
+}
+
+/* ---- RESPONSIVE DE ESTA PÁGINA ----
+   .equipo y .iframe-gps traían márgenes negativos fijos (-300px / -290px)
+   pensados solo para pantallas grandes; en tablet/celular esos márgenes
+   sacaban el contenido fuera del área visible. Aquí se neutralizan y los
+   iframes de ancho fijo (740px / 760px) pasan a ser 100% fluido. */
+@media (max-width: 1300px) {
+    body.page-contacto .equipo {
+        margin-left: 0;
+    }
+
+    body.page-contacto .iframe-gps iframe {
+        width: 100% !important;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    body.page-contacto .equipo {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    body.page-contacto .avatar-circulo {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 650px) {
+    body.page-contacto .avatar-circulo {
+        width: 90px;
+        height: 90px;
+    }
+
+    body.page-contacto .integrante-nombre {
+        font-size: 0.75rem;
+    }
+
+    body.page-contacto .iframe-gps iframe {
+        height: 220px;
+    }
+}
+
+
+/* ==========================================================================
+   10. PÁGINA: REPRODUCTOR (reproductor.html) — scope: body.page-reproductor
+   -- Reutiliza el mismo patrón visual de Hero + Panel blanco de Recursos y
+      Recomendaciones; dentro del panel va una lista de "pistas" en vez del
+      carrusel, cada una con su reproductor de audio nativo.
+   ========================================================================== */
+
+/* ---- HERO (misma altura/tipografía que los demás heroes de página) ---- */
+body.page-reproductor .reproductor-hero {
+    width: min(1180px, calc(100% - 40px));
+    height: 160px;
+    margin: 10px auto 18px;
+    padding: 25px 45px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(110deg, rgba(8, 75, 94, .98), rgba(0, 132, 151, .86)),
+        url("FOTO SONIDO.jpg") center / cover;
+    box-shadow: 0 15px 35px rgba(0, 60, 80, .20);
+}
+
+body.page-reproductor .reproductor-hero .hero-texto {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+body.page-reproductor .reproductor-hero .hero-etiqueta {
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: .85;
+}
+
+body.page-reproductor .reproductor-hero .hero-texto h1 {
+    margin: 4px 0 3px;
+    color: white;
+    font-family: 'Lobster Two', 'Times New Roman', serif;
+    font-size: 42px;
+    line-height: 1;
+}
+
+body.page-reproductor .reproductor-hero .hero-texto p {
+    margin: 0 0 13px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+body.page-reproductor .reproductor-hero .hero-decoracion {
+    position: absolute;
+    right: 75px;
+    top: -18px;
+    font-size: 150px;
+    line-height: 1;
+    color: rgba(255,255,255,.10);
+    transform: rotate(-10deg);
+}
+
+/* ---- PANEL BLANCO con la lista de pistas ---- */
+body.page-reproductor .reproductor-panel {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 70, 90, .16);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+body.page-reproductor .volver-recomendaciones {
+    align-self: flex-start;
+    color: #114b5f;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+body.page-reproductor .volver-recomendaciones:hover {
+    text-decoration: underline;
+}
+
+/* ---- CADA PISTA: ícono + título/descripción + reproductor <audio> ---- */
+body.page-reproductor .pista {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #effcff, #e4f5fb);
+    border: 1px solid #d8eff3;
+}
+
+body.page-reproductor .pista-icono {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ffffff;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 6px rgba(17,75,95,0.15);
+}
+
+body.page-reproductor .pista-info {
+    flex: 1;
+    min-width: 0; /* evita que el <audio> empuje el layout en pantallas angostas */
+}
+
+body.page-reproductor .pista-info h2 {
+    margin: 0 0 2px;
+    color: #114b5f;
+    font-size: 1.05rem;
+}
+
+body.page-reproductor .pista-info p {
+    margin: 0 0 10px;
+    color: #526b75;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+body.page-reproductor .pista-info audio {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* ---- RESPONSIVE DE ESTA PÁGINA ---- */
+@media (max-width: 900px) {
+    body.page-reproductor .reproductor-hero {
+        height: auto;
+        min-height: 150px;
+        padding: 25px 30px;
+    }
+
+    body.page-reproductor .reproductor-hero .hero-decoracion {
+        right: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    body.page-reproductor .reproductor-hero {
+        width: calc(100% - 20px);
+        margin-top: 10px;
+        padding: 25px 20px;
+    }
+
+    body.page-reproductor .reproductor-hero .hero-texto h1 {
+        font-size: 34px;
+    }
+
+    body.page-reproductor .reproductor-hero .hero-decoracion {
+        display: none;
+    }
+
+    body.page-reproductor .reproductor-panel {
+        width: calc(100% - 20px);
+        padding: 14px;
+    }
+
+    body.page-reproductor .pista {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body.page-reproductor .pista-info audio {
+        max-width: 100%;
+    }
+}
+
+
+/* ==========================================================================
+   11. INTERACTIVIDAD (compartido: requiere el script.js del proyecto)
+   ========================================================================== */
+
+/* ---- ANIMACIÓN DE APARICIÓN al hacer scroll ---- */
+.fade-in-elemento {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-elemento.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---- BOTÓN "SUBIR ARRIBA" (flotante, abajo a la derecha) ---- */
+.boton-subir {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background-color: #114b5f;
+    color: #ffffff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 100;
+}
+
+.boton-subir.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ==========================================================================
+   12. RESPONSIVE GENERAL
+   -- Reglas responsive que afectan al header compartido o a páginas que
+      todavía no tienen su propio bloque "RESPONSIVE" al final (Inicio y
+      Contacto). Recursos y Recomendaciones ya tienen el suyo dentro de
+      sus propias secciones (7 y 8), así que no repitas nada de esas dos
+      páginas acá.
+   ========================================================================== */
+@media (max-width: 1300px) {
+    /* Recursos: en pantallas angostas ya no cabe la columna de imágenes laterales sin encimarse con el texto */
+    body.page-recursos .contenido {
+        grid-template-columns: 1fr;
+    }
+
+    body.page-recursos .lado-izq,
+    body.page-recursos .lado-der {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    nav ul {
+        justify-content: center;
+        gap: 14px;
+    }
+
+    /* Inicio */
+    body.page-inicio .hero {
+        padding: 40px 25px 60px;
+    }
+
+    body.page-inicio .hero-content {
+        text-align: center;
+        height: auto;
+        gap: 30px;
+    }
+
+    body.page-inicio .hero-title {
+        font-size: 2rem;
+        letter-spacing: 14px; /* en desktop es 50px: en pantallas angostas eso desborda el texto */
+    }
+
+    body.page-inicio .carrusel-ventana {
+        height: 240px;
+    }
+
+    body.page-inicio .carrusel-flecha {
+        top: calc(240px / 2);
+    }
+
+    /* Contacto */
+    body.page-contacto .contenido {
+        flex-direction: column;
+    }
+}
+
+/* ---- CELULARES PEQUEÑOS (~480px o menos) ----
+   Ajustes finos que aplican sobre todas las páginas para que nada se
+   desborde ni quede demasiado apretado en pantallas muy angostas. */
+@media (max-width: 480px) {
+    .logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .slogan {
+        font-size: 0.9rem;
+    }
+
+    nav ul {
+        gap: 10px;
+    }
+
+    nav a {
+        font-size: 0.85rem;
+    }
+
+    /* Inicio */
+    body.page-inicio .hero-title {
+        font-size: 1.6rem;
+        letter-spacing: 6px;
+    }
+
+    body.page-inicio .hero-intro {
+        font-size: 0.9rem;
+    }
+
+    body.page-inicio .carrusel-ventana {
+        height: 200px;
+    }
+
+    body.page-inicio .carrusel-flecha {
+        top: calc(200px / 2);
+        width: 32px;
+        height: 32px;
+        font-size: 1.3rem;
+    }
+
+    /* Hero de Encuesta / Recursos / Recomendaciones / Contacto (mismo patrón visual) */
+    body.page-encuesta .encuesta-hero .hero-texto h1,
+    .pagina-recursos .hero-texto h1,
+    body.page-recomendaciones .hero-texto h1,
+    body.page-contacto .contactos .hero-texto h1 {
+        font-size: 28px;
+    }
+
+    /* Recomendaciones: tarjetas un poco más angostas para que se vean
+       mejor en celulares muy pequeños dentro del carrusel */
+    body.page-recomendaciones .tarjeta {
+        width: 150px;
+        padding: 18px 12px 8px;
+    }
+
+    /* Recursos: los tres "beneficios" y los "pasos" ya pasan a 1 columna
+       en 900px; acá solo se ajusta el padding para que respiren mejor */
+    .pagina-recursos .beneficio,
+    .pagina-recursos .paso {
+        padding: 12px;
+    }
+}

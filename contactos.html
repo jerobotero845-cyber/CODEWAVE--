@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEWAVE - Contacto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-contacto">
+    <!-- HEADER (compartido) -->
+    <header>
+        <div class="logo-container">
+            <img src="34055.png" alt="Logo CodeWave" class="logo">
+            <span class="slogan">Musica Que Optimiza El Aprendizaje</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="formulario.html">Diagnóstico</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="recomendaciones.html">Recomendaciones</a></li>
+                <li><a href="contactos.html" class="active">Contacto</a></li>
+                <li><a href="reproductor.html"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+     <!-- CONTENIDO: RECOMENDACIONES -->
+    <section class="contactos">
+
+        <div class="hero-texto">
+            <span class="hero-etiqueta">CODEWAVE • CONTACTOS</span>
+
+            <h1>Contactos</h1>
+
+            <p>
+                Nos ayudaria de mucho si rellenas la
+                encuesta de satisfacción, dejanos tu calificación
+                para seguir mejorando.
+            </p>
+
+            <a href="#contactos" class="btn-explorar">
+                Explorar contactos
+            </a>
+        </div>
+
+        <div class="hero-decoracion">♫</div>
+
+    </section>
+
+    <section class="contenido">
+        <div class="columna-izquierda">
+            <div class="equipo">
+                <div class="integrante">
+                    <div class="avatar-circulo">
+                        <img src="con1.png" alt="Integrante del equipo 1">
+                    </div>
+                    <p class="integrante-nombre">Andres Felipe</p>
+                    <p class="rol">Tester</p>
+                </div>
+                <div class="integrante">
+                    <div class="avatar-circulo">
+                        <img src="con2.png" alt="Integrante del equipo 2">
+                    </div>
+                    <p class="integrante-nombre">Jeronimo Escobar</p>
+                    <p class="rol">Administrador</p>
+                </div>
+                <div class="integrante">
+                    <div class="avatar-circulo">
+                        <img src="con3.png" alt="Integrante del equipo 3">
+                    </div>
+                    <p class="integrante-nombre">Juan Camilo Bedoya</p>
+                    <p class="rol">Desarrollador</p>
+                </div>
+                <div class="integrante">
+                    <div class="avatar-circulo">
+                        <img src="con4.png" alt="Integrante del equipo 4">
+                    </div>
+                    <p class="integrante-nombre">Alan Rodriguez</p>
+                    <p class="rol">Analísta</p>
+                </div>
+            </div>
+
+            <div class="iframe-gps">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.856745412183!2d-75.5755271250058!3d6.282555625916398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4428d63a4c5f53%3A0x9781208715f7436d!2sI.E.%20Dinamarca!5e0!3m2!1ses!2sco!4v1789156185143!5m2!1ses!2sco" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+        </div>
+
+        <div class="form-wrapper">
+            <form id="form-encuesta" class="form-contacto" action="conexion.php" method="post">
+                <h2 class="form-titulo">Encuesta de satisfacción</h2>
+
+                <div class="campo">
+                    <label for="nombre">Nombre <span class="obligatorio">*</span></label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu respuesta" required>
+                    <span class="error-campo" id="error-nombre"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="apellido">Apellido <span class="obligatorio">*</span></label>
+                    <input type="text" id="apellido" name="apellido" placeholder="Tu respuesta" required>
+                    <span class="error-campo" id="error-apellido"></span>
+                </div>
+
+                <fieldset class="campo campo-util grupo-opciones">
+                    <legend>¿Te resultó útil? <span class="obligatorio">*</span></legend>
+                    <div class="opciones-fila">
+                        <label class="opcion">
+                            <input type="radio" name="util" value="Si" required> <span>Sí</span>
+                        </label>
+                        <label class="opcion">
+                            <input type="radio" name="util" value="No"> <span>No</span>
+                        </label>
+                    </div>
+                    <span class="error-campo" id="error-util"></span>
+                </fieldset>
+
+                <div class="campo campo-comentario">
+                    <label for="comentario">Comentario</label>
+                    <textarea id="comentario" name="comentario" placeholder="Tu respuesta" rows="2"></textarea>
+                </div>
+
+                <fieldset class="campo campo-calificacion grupo-calificacion">
+                    <legend>Calificación <span class="obligatorio">*</span></legend>
+                    <div class="escala">
+                        <label class="estrella"><input type="radio" name="calificacion" value="1" required><span>1</span></label>
+                        <label class="estrella"><input type="radio" name="calificacion" value="2"><span>2</span></label>
+                        <label class="estrella"><input type="radio" name="calificacion" value="3"><span>3</span></label>
+                        <label class="estrella"><input type="radio" name="calificacion" value="4"><span>4</span></label>
+                        <label class="estrella"><input type="radio" name="calificacion" value="5"><span>5</span></label>
+                    </div>
+                    <span class="error-campo" id="error-calificacion"></span>
+                </fieldset>
+
+               <div class="form-acciones">
+                    <button type="submit" class="btn-enviar">Enviar</button>
+                    <button type="reset" class="btn-limpiar">Borrar formulario</button>
+                </div>
+
+                <!-- COLOCAR ESTA LÍNEA DEBAJO DE LOS BOTONES Y ANTES DE </form> -->
+                <p id="mensaje-exito" class="mensaje-exito" hidden>El envío de las respuestas fue exitoso.</p>
+            </form>
+            <div id="mensaje-exito" class="mensaje-exito" hidden>
+                El formulario fue enviado correctamente.
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (compartido) -->
+    <footer>
+        <div class="footer-bottom">
+            <p>Medellín, Colombia | 2026 CodeWave</p>
+        </div>
+    </footer>
+
+   <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-encuesta');
+            const nombre = form.elements['nombre'];
+            const apellido = form.elements['apellido'];
+            const mensajeExito = document.getElementById('mensaje-exito');
+
+            const mostrarError = (id, texto) => {
+                const el = document.getElementById('error-' + id);
+                if (el) el.textContent = texto;
+            };
+
+            function validar() {
+                let valido = true;
+                ['nombre', 'apellido', 'util', 'calificacion'].forEach(id => mostrarError(id, ''));
+                nombre.classList.remove('invalido');
+                apellido.classList.remove('invalido');
+
+                if (!nombre.value.trim()) {
+                    mostrarError('nombre', 'Escribe tu nombre.');
+                    nombre.classList.add('invalido');
+                    valido = false;
+                }
+                if (!apellido.value.trim()) {
+                    mostrarError('apellido', 'Escribe tu apellido.');
+                    apellido.classList.add('invalido');
+                    valido = false;
+                }
+                if (!form.querySelector('input[name="util"]:checked')) {
+                    mostrarError('util', 'Elige una opción.');
+                    valido = false;
+                }
+                if (!form.querySelector('input[name="calificacion"]:checked')) {
+                    mostrarError('calificacion', 'Elige una calificación del 1 al 5.');
+                    valido = false;
+                }
+                return valido;
+            }
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (validar()) {
+                    const formData = new FormData(form);
+
+                    fetch('conexion.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Muestra el mensaje de éxito activando el bloque
+                            mensajeExito.removeAttribute('hidden');
+                            mensajeExito.style.display = 'block';
+
+                            // Limpia los campos individualmente sin activar el evento reset
+                            nombre.value = '';
+                            apellido.value = '';
+                            form.elements['comentario'].value = '';
+                            const radios = form.querySelectorAll('input[type="radio"]');
+                            radios.forEach(r => r.checked = false);
+                        } else {
+                            alert('Hubo un problema al guardar los datos.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error en la conexión con el servidor.');
+                    });
+                }
+            });
+
+            form.addEventListener('reset', () => {
+                ['nombre', 'apellido', 'util', 'calificacion'].forEach(id => mostrarError(id, ''));
+                nombre.classList.remove('invalido');
+                apellido.classList.remove('invalido');
+                mensajeExito.setAttribute('hidden', 'true');
+                mensajeExito.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

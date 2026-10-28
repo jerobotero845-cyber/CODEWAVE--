@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEWAVE - Recursos</title>
+
+    <!-- Mantiene el estilo general de las demás páginas -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Estilos exclusivos de Recursos -->
+    <link rel="stylesheet" href="recursos_final_sin_imagenes.css">
+
+    <!-- ================= ESTILOS DE LAS NUEVAS FUNCIONES INTERACTIVAS ================= -->
+    <style>
+        /* --- Animaciones al hacer scroll --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+        }
+
+        /* --- Tarjetas de beneficio: ahora son botones expandibles --- */
+        .beneficio {
+            cursor: pointer;
+            transition: box-shadow .25s ease, transform .25s ease;
+        }
+        .beneficio:hover { transform: translateY(-2px); }
+        .beneficio[aria-expanded="true"] { box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+
+        /* El detalle FLOTA sobre el contenido al abrirse: así no empuja la página
+           hacia abajo y no aparece la barra de scroll. */
+        .beneficio { position: relative; }
+        .beneficio[aria-expanded="true"] { z-index: 30; }
+        .beneficio-extra {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 30;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 14px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 60, 80, .25);
+            font-size: .92em;
+            color: inherit;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height .35s ease, padding .35s ease, opacity .25s ease;
+        }
+        .beneficio[aria-expanded="true"] .beneficio-extra {
+            max-height: 320px;
+            padding: 12px 14px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .beneficio-toggle {
+            display: inline-block;
+            margin-top: .25rem;
+            font-size: .85em;
+            font-weight: 600;
+            color: #0f7a8c;
+        }
+
+        /* --- Reproductor de audio de ejemplo --- */
+        .audio-demo {
+            margin-top: .75rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+        }
+        .audio-demo button {
+            border: none;
+            background: #0f7a8c;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: .85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background .2s ease;
+        }
+        .audio-demo button:hover { background: #0b5f6d; }
+        .audio-demo button:focus-visible { outline: 2px solid #0f7a8c; outline-offset: 2px; }
+
+        .audio-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 20px;
+        }
+        .audio-bars span {
+            width: 3px;
+            background: #0f7a8c;
+            border-radius: 2px;
+            height: 4px;
+            transition: height .15s ease;
+        }
+        .audio-demo.playing .audio-bars span {
+            animation: bar-bounce 0.9s ease-in-out infinite;
+        }
+        .audio-demo.playing .audio-bars span:nth-child(2) { animation-delay: .15s; }
+        .audio-demo.playing .audio-bars span:nth-child(3) { animation-delay: .3s; }
+        .audio-demo.playing .audio-bars span:nth-child(4) { animation-delay: .45s; }
+        @keyframes bar-bounce {
+            0%, 100% { height: 4px; }
+            50% { height: 18px; }
+        }
+        .audio-label { font-size: .8rem; opacity: .75; }
+
+        /* --- Stepper interactivo de la investigación --- */
+        .pasos { position: relative; }
+        .pasos-progreso {
+            height: 4px;
+            background: rgba(15,122,140,.15);
+            border-radius: 4px;
+            margin-top: .5rem;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
+        .pasos-progreso-fill {
+            height: 100%;
+            width: 33.33%;
+            background: #0f7a8c;
+            transition: width .35s ease;
+        }
+        .paso { position: relative; cursor: pointer; transition: background .25s ease, transform .2s ease; }
+        .paso.abierto { z-index: 30; }
+        .paso:hover { transform: translateY(-2px); }
+        .paso.activo span:first-child {
+            background: #0f7a8c;
+            color: #fff;
+        }
+        /* El detalle del paso también flota (hacia arriba) en vez de agrandar la página */
+        .paso-detalle {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(100% + 8px);
+            z-index: 30;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 14px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 60, 80, .25);
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height .35s ease, padding .35s ease, opacity .25s ease;
+        }
+        .paso.abierto .paso-detalle {
+            max-height: 220px;
+            padding: 12px 14px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .pagina-recursos .paso-detalle p { font-size: 11px; line-height: 1.45; }
+
+        /* --- Quiz de recomendación --- */
+        .btn-quiz {
+            border: none;
+            cursor: pointer;
+            margin-left: 8px;
+            font-family: inherit;
+        }
+        .quiz-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(4, 45, 58, .65);
+        }
+        .quiz-overlay.abierto { display: flex; }
+        .quiz-recomendacion {
+            position: relative;
+            width: min(620px, 100%);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,.3);
+        }
+        .quiz-cerrar {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            color: #0f7a8c;
+            cursor: pointer;
+        }
+        .quiz-recomendacion h2 { margin-top: 0; }
+        .quiz-pregunta { margin-bottom: 1.25rem; }
+        .quiz-pregunta p.enunciado { font-weight: 600; margin-bottom: .6rem; }
+        .quiz-opciones { display: flex; flex-wrap: wrap; gap: .6rem; }
+        .quiz-opciones button {
+            border: 1px solid rgba(15,122,140,.35);
+            background: #fff;
+            color: #0f7a8c;
+            padding: .55rem 1rem;
+            border-radius: 999px;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: background .2s ease, color .2s ease;
+        }
+        .quiz-opciones button.seleccionada,
+        .quiz-opciones button:hover {
+            background: #0f7a8c;
+            color: #fff;
+        }
+        .quiz-resultado {
+            margin-top: 1rem;
+            padding: 1rem 1.25rem;
+            background: #f0f9fa;
+            border-left: 4px solid #0f7a8c;
+            border-radius: 8px;
+            display: none;
+        }
+        .quiz-resultado.visible { display: block; }
+        .quiz-reiniciar {
+            margin-top: .75rem;
+            background: none;
+            border: none;
+            color: #0f7a8c;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: .85rem;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body class="pagina-recursos">
+
+    <!-- ================= HEADER ================= -->
+    <header>
+        <div class="logo-container">
+            <img src="34055.png" alt="Logo CodeWave" class="logo">
+            <span class="slogan">Musica Que Optimiza El Aprendizaje</span>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="formulario.html">Diagnóstico</a></li>
+                <li><a href="recursos_final_sin_imagenes.html" class="active">Recursos</a></li>
+                <li><a href="recomendaciones.html">Recomendaciones</a></li>
+                <li><a href="contactos.html">Contacto</a></li>
+                <li><a href="reproductor.html"></a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+    <section class="recursos-hero">
+
+        <div class="hero-texto">
+            <span class="hero-etiqueta">CODEWAVE • RECURSOS</span>
+
+            <h1>Recursos</h1>
+
+            <p>
+                Información de interés sobre la investigación
+                y la relación entre música, sonido y concentración.
+            </p>
+
+            <a href="#contenido" class="btn-explorar">
+                Explorar recursos
+            </a>
+            <button type="button" class="btn-explorar btn-quiz" id="abrirQuiz">
+                ¿Qué sonido me conviene?
+            </button>
+        </div>
+
+        <div class="hero-decoracion">♫</div>
+
+    </section>
+
+
+    <!-- ================= PANEL PRINCIPAL ================= -->
+    <main class="recursos-panel" id="contenido">
+
+        <!-- ===== CONCENTRACIÓN ===== -->
+        <section class="bloque-concentracion">
+
+            <div class="titulo-bloque reveal">
+                <span class="numero-seccion">01</span>
+
+                <div>
+                    <span class="etiqueta-seccion">CONCENTRACIÓN</span>
+
+                    <h2>
+                        ¿Cómo nos ayudan las ondas de sonido a concentrarnos?
+                    </h2>
+                </div>
+            </div>
+
+            <p class="descripcion reveal">
+                El cerebro humano produce impulsos eléctricos que viajan a través
+                de nuestras neuronas. Estos impulsos crean patrones conocidos como
+                ondas cerebrales. Al escuchar música de concentración o frecuencias
+                específicas, ocurre lo siguiente:
+            </p>
+
+            <p class="descripcion reveal" style="font-size:.85em; opacity:.7;">
+                Toca cada tarjeta para ver más detalle y escuchar un ejemplo del sonido.
+            </p>
+
+
+            <div class="beneficios">
+
+                <article class="beneficio reveal" tabindex="0" role="button" aria-expanded="false" data-audio="binaural">
+                    <div class="icono">🧠</div>
+
+                    <div>
+                        <h3>Sincronización neuronal</h3>
+
+                        <p>
+                            El cerebro cambia su frecuencia interna para igualar
+                            el estímulo auditivo externo.
+                        </p>
+
+                        <div class="beneficio-extra">
+                            <p>
+                                Este fenómeno se llama "entrainment": cuando se presenta un tono
+                                ligeramente distinto en cada oído (audio binaural), el cerebro
+                                percibe una tercera frecuencia y tiende a igualar su actividad
+                                eléctrica a ese ritmo, favoreciendo estados de calma o alerta según
+                                la frecuencia usada.
+                            </p>
+                            <div class="audio-demo" data-tipo="binaural">
+                                <button type="button" aria-label="Reproducir ejemplo de sonido binaural">▶</button>
+                                <div class="audio-bars"><span></span><span></span><span></span><span></span></div>
+                                <span class="audio-label">Ejemplo binaural (usa audífonos)</span>
+                            </div>
+                        </div>
+
+                        <span class="beneficio-toggle">Ver más ↓</span>
+                    </div>
+                </article>
+
+
+                <article class="beneficio reveal" tabindex="0" role="button" aria-expanded="false" data-audio="ruidoblanco">
+                    <div class="icono">🔇</div>
+
+                    <div>
+                        <h3>Bloqueo de distracciones</h3>
+
+                        <p>
+                            Los sonidos continuos, como el ruido blanco, enmascaran
+                            los ruidos repentinos del entorno, evitando que el cerebro
+                            se alerte y se distraiga.
+                        </p>
+
+                        <div class="beneficio-extra">
+                            <p>
+                                Al mantener un nivel de sonido constante, el ruido blanco elimina los
+                                contrastes bruscos (una puerta, una conversación) que suelen capturar
+                                la atención involuntariamente, permitiendo sesiones de estudio más largas
+                                sin interrupciones cognitivas.
+                            </p>
+                            <div class="audio-demo" data-tipo="ruidoblanco">
+                                <button type="button" aria-label="Reproducir ejemplo de ruido blanco">▶</button>
+                                <div class="audio-bars"><span></span><span></span><span></span><span></span></div>
+                                <span class="audio-label">Ejemplo de ruido blanco</span>
+                            </div>
+                        </div>
+
+                        <span class="beneficio-toggle">Ver más ↓</span>
+                    </div>
+                </article>
+
+
+                <article class="beneficio reveal" tabindex="0" role="button" aria-expanded="false" data-audio="calma">
+                    <div class="icono">🌿</div>
+
+                    <div>
+                        <h3>Reducción de la ansiedad</h3>
+
+                        <p>
+                            Ciertos ritmos disminuyen los niveles de cortisol
+                            (la hormona del estrés), lo que permite que la corteza
+                            prefrontal trabaje mejor.
+                        </p>
+
+                        <div class="beneficio-extra">
+                            <p>
+                                Frecuencias bajas y ritmos lentos (cercanos al ritmo cardíaco en reposo)
+                                activan el sistema nervioso parasimpático, reduciendo la respuesta de
+                                estrés y liberando recursos cognitivos para tareas que exigen atención
+                                sostenida.
+                            </p>
+                            <div class="audio-demo" data-tipo="calma">
+                                <button type="button" aria-label="Reproducir ejemplo de tono calmante">▶</button>
+                                <div class="audio-bars"><span></span><span></span><span></span><span></span></div>
+                                <span class="audio-label">Ejemplo de tono calmante</span>
+                            </div>
+                        </div>
+
+                        <span class="beneficio-toggle">Ver más ↓</span>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===== INVESTIGACIÓN ===== -->
+        <section class="investigacion reveal">
+
+            <div class="investigacion-info">
+
+                <div class="icono-investigacion">🔬</div>
+
+                <div>
+                    <span class="etiqueta-seccion">INVESTIGACIÓN</span>
+
+                    <h2>
+                        Investigación de la Universidad de Buffalo
+                    </h2>
+
+                    <p>
+                        El estudio, aprobado éticamente por la Universidad de Buffalo,
+                        consistió en dos sesiones de 2 horas por participante, separadas
+                        por una semana, en las que se comparó el efecto de ruido binaural
+                        (BB) frente a un tono puro sobre la atención sostenida.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="pasos-progreso">
+                <div class="pasos-progreso-fill" id="pasosProgresoFill"></div>
+            </div>
+
+            <div class="pasos">
+
+                <article class="paso activo" data-paso="1">
+                    <span>1</span>
+
+                    <div>
+                        <h3>Preparación</h3>
+                        <p>Cuestionario POMS y configuración del EEG.</p>
+                        <div class="paso-detalle">
+                            <p>
+                                Antes de empezar, cada participante completa el cuestionario POMS
+                                (Profile of Mood States) para registrar su estado de ánimo inicial,
+                                y se le coloca el equipo de electroencefalografía (EEG) que registrará
+                                su actividad cerebral durante la tarea.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="paso" data-paso="2">
+                    <span>2</span>
+
+                    <div>
+                        <h3>Atención</h3>
+                        <p>Tarea IP-CPT mientras escuchaban el estímulo asignado.</p>
+                        <div class="paso-detalle">
+                            <p>
+                                El participante realiza una tarea de atención sostenida (IP-CPT,
+                                Identical Pairs Continuous Performance Task) mientras escucha, según
+                                el grupo asignado, ruido binaural o un tono puro, permitiendo comparar
+                                el efecto de cada estímulo sobre el rendimiento.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="paso" data-paso="3">
+                    <span>3</span>
+
+                    <div>
+                        <h3>Evaluación</h3>
+                        <p>Repetición del POMS y valoración del sonido y rendimiento.</p>
+                        <div class="paso-detalle">
+                            <p>
+                                Al finalizar, se repite el cuestionario POMS para medir cambios en el
+                                estado de ánimo, y el participante valora subjetivamente el sonido
+                                escuchado y su percepción de rendimiento durante la tarea.
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= FOOTER (compartido) ================= -->
+    <footer>
+        <div class="footer-bottom">
+            <p>Medellín, Colombia | 2026 CodeWave</p>
+        </div>
+    </footer>
+
+
+    <!-- ================= QUIZ EN VENTANA EMERGENTE (no ocupa espacio en la página) ================= -->
+    <div class="quiz-overlay" id="quizOverlay" aria-hidden="true">
+        <section class="quiz-recomendacion" role="dialog" aria-modal="true" aria-labelledby="quizTitulo">
+            <button type="button" class="quiz-cerrar" id="quizCerrar" aria-label="Cerrar quiz">✕</button>
+            <span class="etiqueta-seccion">PARA TI</span>
+            <h2 id="quizTitulo">¿Qué tipo de sonido te conviene?</h2>
+            <p style="opacity:.75; margin-top:0.5rem;">
+                Responde estas dos preguntas y te recomendamos un tipo de estímulo.
+            </p>
+
+            <div class="quiz-pregunta" data-pregunta="1">
+                <p class="enunciado">1. ¿Qué te suele distraer más al estudiar?</p>
+                <div class="quiz-opciones">
+                    <button type="button" data-valor="ruido">Ruidos repentinos del entorno</button>
+                    <button type="button" data-valor="ansiedad">La ansiedad o el estrés</button>
+                    <button type="button" data-valor="dispersión">Me cuesta arrancar / dispersión mental</button>
+                </div>
+            </div>
+
+            <div class="quiz-pregunta" data-pregunta="2">
+                <p class="enunciado">2. ¿Con qué prefieres estudiar?</p>
+                <div class="quiz-opciones">
+                    <button type="button" data-valor="audifonos">Audífonos, ambiente controlado</button>
+                    <button type="button" data-valor="parlante">Parlante o sonido de fondo, sin audífonos</button>
+                </div>
+            </div>
+
+            <div class="quiz-resultado" id="quizResultado"></div>
+            <button type="button" class="quiz-reiniciar" id="quizReiniciar" style="display:none;">Volver a empezar</button>
+        </section>
+    </div>
+
+
+
+    <!-- ================= SCRIPTS DE INTERACTIVIDAD ================= -->
+    <script>
+    (function () {
+        "use strict";
+
+        /* ---------- 1. Animaciones al hacer scroll ---------- */
+        var revealEls = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window && revealEls.length) {
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            revealEls.forEach(function (el) { observer.observe(el); });
+        } else {
+            revealEls.forEach(function (el) { el.classList.add("visible"); });
+        }
+
+        /* ---------- 2. Tarjetas de beneficio expandibles ---------- */
+        var beneficios = document.querySelectorAll(".beneficio");
+        beneficios.forEach(function (card) {
+            function toggle() {
+                var expanded = card.getAttribute("aria-expanded") === "true";
+                card.setAttribute("aria-expanded", String(!expanded));
+                var label = card.querySelector(".beneficio-toggle");
+                if (label) label.textContent = expanded ? "Ver más ↓" : "Ver menos ↑";
+            }
+            card.addEventListener("click", function (e) {
+                // Evita que el clic en el botón de audio también colapse la tarjeta
+                if (e.target.closest(".audio-demo")) return;
+                toggle();
+            });
+            card.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggle();
+                }
+            });
+        });
+
+        /* ---------- 3. Reproductor de audio (Web Audio API, sin archivos externos) ---------- */
+        var audioCtx = null;
+        var activeStop = null;
+
+        function getContext() {
+            if (!audioCtx) {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (AC) audioCtx = new AC();
+            }
+            return audioCtx;
+        }
+
+        function detenerActivo() {
+            if (activeStop) {
+                activeStop();
+                activeStop = null;
+            }
+        }
+
+        function reproducirBinaural(ctx, destino) {
+            var oscL = ctx.createOscillator();
+            var oscR = ctx.createOscillator();
+            var merger = ctx.createChannelMerger(2);
+            var gain = ctx.createGain();
+            gain.gain.value = 0.05;
+            oscL.frequency.value = 220;
+            oscR.frequency.value = 226; // diferencia de 6 Hz para simular un ritmo binaural
+            oscL.connect(merger, 0, 0);
+            oscR.connect(merger, 0, 1);
+            merger.connect(gain);
+            gain.connect(destino);
+            oscL.start();
+            oscR.start();
+            return function () { oscL.stop(); oscR.stop(); };
+        }
+
+        function reproducirRuidoBlanco(ctx, destino) {
+            var bufferSize = 2 * ctx.sampleRate;
+            var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            var data = buffer.getChannelData(0);
+            for (var i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            var noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            noise.loop = true;
+            var gain = ctx.createGain();
+            gain.gain.value = 0.04;
+            noise.connect(gain);
+            gain.connect(destino);
+            noise.start();
+            return function () { noise.stop(); };
+        }
+
+        function reproducirCalma(ctx, destino) {
+            var osc = ctx.createOscillator();
+            var lfo = ctx.createGain();
+            var gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.value = 174; // tono grave, relajante
+            gain.gain.value = 0.06;
+            osc.connect(gain);
+            gain.connect(destino);
+            osc.start();
+            return function () { osc.stop(); };
+        }
+
+        var demos = document.querySelectorAll(".audio-demo");
+        demos.forEach(function (demo) {
+            var btn = demo.querySelector("button");
+            btn.addEventListener("click", function () {
+                var yaSonando = demo.classList.contains("playing");
+
+                // Detiene cualquier otro audio activo
+                demos.forEach(function (d) {
+                    d.classList.remove("playing");
+                    d.querySelector("button").textContent = "▶";
+                });
+                detenerActivo();
+
+                if (yaSonando) return; // el clic solo debía pausar
+
+                var ctx = getContext();
+                if (!ctx) return;
+                if (ctx.state === "suspended") ctx.resume();
+
+                var tipo = demo.getAttribute("data-tipo");
+                var stop;
+                if (tipo === "binaural") stop = reproducirBinaural(ctx, ctx.destination);
+                else if (tipo === "ruidoblanco") stop = reproducirRuidoBlanco(ctx, ctx.destination);
+                else stop = reproducirCalma(ctx, ctx.destination);
+
+                activeStop = stop;
+                demo.classList.add("playing");
+                btn.textContent = "❚❚";
+
+                // Se detiene solo después de 6 segundos para no dejarlo sonando indefinidamente
+                window.setTimeout(function () {
+                    if (activeStop === stop) {
+                        stop();
+                        activeStop = null;
+                        demo.classList.remove("playing");
+                        btn.textContent = "▶";
+                    }
+                }, 6000);
+            });
+        });
+
+        /* ---------- 4. Stepper interactivo de la investigación ---------- */
+        var pasos = document.querySelectorAll(".paso");
+        var fill = document.getElementById("pasosProgresoFill");
+        pasos.forEach(function (paso) {
+            paso.addEventListener("click", function () {
+                var yaAbierto = paso.classList.contains("abierto");
+                pasos.forEach(function (p) { p.classList.remove("activo", "abierto"); });
+                paso.classList.add("activo");
+                if (!yaAbierto) paso.classList.add("abierto"); // un segundo clic en el mismo paso cierra el detalle
+                var n = parseInt(paso.getAttribute("data-paso"), 10);
+                if (fill) fill.style.width = (n / pasos.length * 100) + "%";
+            });
+        });
+        // un clic fuera de los pasos cierra el detalle que esté abierto
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest(".paso")) {
+                pasos.forEach(function (p) { p.classList.remove("abierto"); });
+            }
+        });
+        if (fill) fill.style.width = (1 / pasos.length * 100) + "%";
+
+        /* ---------- 5. Quiz en ventana emergente ---------- */
+        var overlay = document.getElementById("quizOverlay");
+        var abrirBtn = document.getElementById("abrirQuiz");
+        var cerrarBtn = document.getElementById("quizCerrar");
+
+        function abrirQuiz() {
+            overlay.classList.add("abierto");
+            overlay.setAttribute("aria-hidden", "false");
+            cerrarBtn.focus();
+        }
+        function cerrarQuiz() {
+            overlay.classList.remove("abierto");
+            overlay.setAttribute("aria-hidden", "true");
+            abrirBtn.focus();
+        }
+        abrirBtn.addEventListener("click", abrirQuiz);
+        cerrarBtn.addEventListener("click", cerrarQuiz);
+        overlay.addEventListener("click", function (e) { if (e.target === overlay) cerrarQuiz(); });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && overlay.classList.contains("abierto")) cerrarQuiz();
+        });
+
+        /* ---------- Lógica del quiz ---------- */
+        var respuestas = {};
+        var preguntas = document.querySelectorAll(".quiz-pregunta");
+        var resultadoBox = document.getElementById("quizResultado");
+        var reiniciarBtn = document.getElementById("quizReiniciar");
+
+        var recomendaciones = {
+            "ruido": {
+                titulo: "Ruido blanco",
+                texto: "Como lo que más te distrae son los sonidos repentinos del entorno, el ruido blanco es tu mejor aliado: crea una capa constante que enmascara esos picos de sonido."
+            },
+            "ansiedad": {
+                titulo: "Tonos calmantes / frecuencias bajas",
+                texto: "Si la ansiedad es tu principal obstáculo, busca ritmos lentos y frecuencias graves: ayudan a bajar el cortisol y a que tu corteza prefrontal trabaje con más claridad."
+            },
+            "dispersión": {
+                titulo: "Audio binaural",
+                texto: "Para arrancar y mantener el enfoque, el audio binaural puede ayudar a que tu cerebro sincronice su actividad con un ritmo asociado a la concentración."
+            }
+        };
+
+        function evaluarQuiz() {
+            if (!respuestas["1"]) return;
+            var base = recomendaciones[respuestas["1"]];
+            var extra = respuestas["2"] === "audifonos"
+                ? " Como prefieres audífonos, aprovecha para usar audio binaural o estéreo cuando sea posible."
+                : " Como prefieres sonido ambiente, el ruido blanco o los tonos calmantes funcionan igual de bien sin audífonos.";
+            resultadoBox.innerHTML = "<strong>" + base.titulo + ".</strong> " + base.texto + (respuestas["2"] ? extra : "");
+            resultadoBox.classList.add("visible");
+            reiniciarBtn.style.display = "inline-block";
+        }
+
+        preguntas.forEach(function (pregunta) {
+            var numero = pregunta.getAttribute("data-pregunta");
+            var botones = pregunta.querySelectorAll("button");
+            botones.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    botones.forEach(function (b) { b.classList.remove("seleccionada"); });
+                    btn.classList.add("seleccionada");
+                    respuestas[numero] = btn.getAttribute("data-valor");
+                    evaluarQuiz();
+                });
+            });
+        });
+
+        reiniciarBtn.addEventListener("click", function () {
+            respuestas = {};
+            document.querySelectorAll(".quiz-opciones button").forEach(function (b) {
+                b.classList.remove("seleccionada");
+            });
+            resultadoBox.classList.remove("visible");
+            resultadoBox.innerHTML = "";
+            reiniciarBtn.style.display = "none";
+        });
+
+    })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEWAVE - Diagnóstico</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Estilos exclusivos del diagnóstico (debe ir después de style.css) -->
+    <link rel="stylesheet" href="diagnostico.css">
+</head>
+<body class="page-encuesta">
+
+    <!-- HEADER (compartido) -->
+    <header>
+        <div class="logo-container">
+            <img src="34055.png" alt="Logo CodeWave" class="logo">
+            <span class="slogan">Musica Que Optimiza El Aprendizaje</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="formulario.html" class="active">Diagnóstico</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="recomendaciones.html">Recomendaciones</a></li>
+                <li><a href="contactos.html">Contacto</a></li>
+                <li><a href="reproductor.html"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="dx-hero">
+        <div class="dx-hero-texto">
+            <span class="dx-etiqueta-hero">CODEWAVE • DIAGNÓSTICO</span>
+            <h1>Diagnóstico</h1>
+            <p>Descubre en qué necesitas mejorar para concentrarte y qué sonido, técnica y hábitos te convienen.</p>
+        </div>
+        <div class="dx-hero-deco">♫</div>
+    </section>
+
+    <!-- PANEL PRINCIPAL -->
+    <main class="dx-panel" id="diagnostico">
+
+        <!-- Pantalla 1: inicio -->
+        <section id="dxInicio" class="dx-aparece">
+            <div class="dx-titulo">
+                <span class="dx-num">🎧</span>
+                <div>
+                    <span class="dx-etiqueta">DIAGNÓSTICO PERSONAL</span>
+                    <h2>¿Qué necesitas para concentrarte mejor?</h2>
+                </div>
+            </div>
+            <p>
+                Responde 8 preguntas rápidas. Analizaremos tus respuestas para identificar en qué áreas
+                tienes más dificultad y te sugeriremos un sonido, un ritmo de estudio y hábitos a medida.
+            </p>
+            <div class="dx-chips">
+                <span class="dx-chip">⏱ Unos 2 minutos</span>
+                <span class="dx-chip">📊 Resultado al instante</span>
+                <span class="dx-chip">🔒 Sin registrarte</span>
+            </div>
+            <button type="button" class="dx-btn" id="dxEmpezar">Comenzar diagnóstico</button>
+            <p class="dx-aviso">Es una guía orientativa para tus hábitos de estudio, no un diagnóstico médico ni psicológico.</p>
+        </section>
+
+        <!-- Pantalla 2: preguntas -->
+        <section id="dxPreguntas" hidden>
+            <div class="dx-progreso-top">
+                <span id="dxContador">Pregunta 1 de 8</span>
+                <span id="dxPorcentaje">0%</span>
+            </div>
+            <div class="dx-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="dxProgresoAria">
+                <div class="dx-barra-fill" id="dxProgresoFill"></div>
+            </div>
+            <h2 class="dx-enunciado" id="dxEnunciado" tabindex="-1"></h2>
+            <p class="dx-ayuda" id="dxAyuda"></p>
+            <div class="dx-opciones" id="dxOpciones" role="group" aria-labelledby="dxEnunciado"></div>
+            <div class="dx-nav">
+                <button type="button" class="dx-link" id="dxAtras">← Atrás</button>
+            </div>
+        </section>
+
+        <!-- Pantalla 3: resultado -->
+        <section id="dxResultado" hidden></section>
+
+    </main>
+
+    <!-- FOOTER (compartido) -->
+    <footer>
+        <div class="footer-bottom">
+            <p>Medellín, Colombia | 2026 CodeWave</p>
+        </div>
+    </footer>
+
+
+    <script>
+    (function () {
+        "use strict";
+
+        /* =====================================================
+           DATOS DEL DIAGNÓSTICO
+           p = puntos que suma cada respuesta a cada área
+           ===================================================== */
+        var DIMS = [
+            { id: "enfoque", nombre: "Enfoque sostenido" },
+            { id: "estres",  nombre: "Estrés y ansiedad" },
+            { id: "ruido",   nombre: "Ruido del entorno" },
+            { id: "energia", nombre: "Energía y descanso" }
+        ];
+
+        var PREGUNTAS = [
+            {
+                t: "¿Qué es lo que más te distrae cuando estudias?",
+                a: "Elige lo que te pase con más frecuencia.",
+                o: [
+                    { e: "🔊", l: "Ruidos del entorno (gente, tráfico, conversaciones)", p: { ruido: 3 } },
+                    { e: "😰", l: "El estrés o las preocupaciones", p: { estres: 3 } },
+                    { e: "💭", l: "Mi mente se va a otras cosas", p: { enfoque: 3 } },
+                    { e: "😴", l: "Cansancio o sueño", p: { energia: 3 } }
+                ]
+            },
+            {
+                t: "¿Cuánto tiempo logras concentrarte seguido antes de distraerte?",
+                a: "Piensa en una sesión de estudio normal.",
+                o: [
+                    { e: "⚡", l: "Menos de 15 minutos", p: { enfoque: 3, energia: 1 }, bloque: { min: 15, pausa: 5 } },
+                    { e: "⏳", l: "Entre 15 y 30 minutos", p: { enfoque: 2 }, bloque: { min: 25, pausa: 5 } },
+                    { e: "🕐", l: "Entre 30 y 60 minutos", p: { enfoque: 1 }, bloque: { min: 40, pausa: 8 } },
+                    { e: "🏔", l: "Más de una hora", p: {}, bloque: { min: 50, pausa: 10 } }
+                ]
+            },
+            {
+                t: "¿En qué momento del día sueles estudiar?",
+                a: "Elige el horario más habitual.",
+                o: [
+                    { e: "🌅", l: "Mañana", p: {} },
+                    { e: "☀️", l: "Tarde", p: { energia: 1 } },
+                    { e: "🌙", l: "Noche o madrugada", p: { energia: 2 } },
+                    { e: "🔀", l: "Varía mucho", p: { energia: 1 } }
+                ]
+            },
+            {
+                t: "¿Cómo es el lugar donde estudias normalmente?",
+                a: "Piensa en el sonido ambiente.",
+                o: [
+                    { e: "🤫", l: "Silencioso", p: {} },
+                    { e: "🏠", l: "Con algo de ruido moderado", p: { ruido: 1 } },
+                    { e: "🚌", l: "Muy ruidoso", p: { ruido: 3 } },
+                    { e: "🔄", l: "Cambia: estudio en distintos lugares", p: { ruido: 2 } }
+                ]
+            },
+            {
+                t: "¿Qué sueles escuchar mientras estudias?",
+                a: "Sé sincero, no hay respuesta correcta.",
+                o: [
+                    { e: "🔇", l: "Nada, prefiero silencio", p: {} },
+                    { e: "🎤", l: "Música con letra", p: { enfoque: 1 }, f: "letra" },
+                    { e: "🎹", l: "Música instrumental o lofi", p: {} },
+                    { e: "🌧", l: "Ruido blanco o sonidos de la naturaleza", p: {} }
+                ]
+            },
+            {
+                t: "¿Cómo te sientes normalmente justo antes de ponerte a estudiar?",
+                a: "Tu estado de ánimo influye en tu concentración.",
+                o: [
+                    { e: "😌", l: "Tranquilo", p: {} },
+                    { e: "😟", l: "Estresado o ansioso", p: { estres: 3 } },
+                    { e: "🥱", l: "Cansado", p: { energia: 3 } },
+                    { e: "😕", l: "Sin ganas ni motivación", p: { enfoque: 2, energia: 1 } }
+                ]
+            },
+            {
+                t: "¿Con qué frecuencia revisas el celular mientras estudias?",
+                a: "Cuenta mensajes, redes y notificaciones.",
+                o: [
+                    { e: "✅", l: "Casi nunca", p: {} },
+                    { e: "📱", l: "A veces", p: { enfoque: 1 } },
+                    { e: "🔔", l: "Muy seguido", p: { enfoque: 3 } }
+                ]
+            },
+            {
+                t: "¿Cómo prefieres escuchar el sonido de estudio?",
+                a: "Esto nos ayuda a recomendarte el tipo de audio adecuado.",
+                o: [
+                    { e: "🎧", l: "Con audífonos", p: {}, aud: true },
+                    { e: "🔈", l: "Con parlante o sonido ambiente", p: {}, aud: false },
+                    { e: "🔁", l: "Los dos, según el día", p: {}, aud: true }
+                ]
+            }
+        ];
+
+        // Máximo posible por área, para convertir los puntos en porcentaje
+        var MAX = {};
+        DIMS.forEach(function (d) {
+            MAX[d.id] = 0;
+            PREGUNTAS.forEach(function (q) {
+                var m = 0;
+                q.o.forEach(function (o) { if (o.p[d.id] && o.p[d.id] > m) m = o.p[d.id]; });
+                MAX[d.id] += m;
+            });
+        });
+
+        function recomendaciones(aud) {
+            return {
+                enfoque: {
+                    icono: "🎯",
+                    titulo: "Enfoque sostenido",
+                    sonido: aud ? "Audio binaural o música instrumental sin letra" : "Música instrumental sin letra",
+                    tono: aud ? "binaural" : "calma",
+                    nota: aud ? "El audio binaural se percibe con audífonos estéreo." : "",
+                    porque: "Un estímulo constante y sin palabras le da a tu cerebro un ritmo al que engancharse y puede reducir los saltos de atención. Es justo lo que compara el estudio de la Universidad de Buffalo (ruido binaural frente a tono puro).",
+                    consejos: [
+                        "Trabaja en bloques cortos con pausas programadas (mira tu bloque sugerido).",
+                        "Deja el celular en otra habitación o en modo no molestar.",
+                        "Antes de cada bloque, define en una frase qué vas a lograr."
+                    ]
+                },
+                estres: {
+                    icono: "🌿",
+                    titulo: "Estrés y ansiedad",
+                    sonido: "Sonidos graves y ritmos lentos",
+                    tono: "calma",
+                    nota: "",
+                    porque: "Los ritmos lentos y suaves ayudan a bajar la activación antes de empezar, y con menos tensión te resulta más fácil concentrarte.",
+                    consejos: [
+                        "Dedica 2 minutos a respirar lento antes de abrir el material.",
+                        "Escribe en una hoja tus pendientes y preocupaciones para sacarlos de la cabeza.",
+                        "Empieza por la tarea más fácil para ganar impulso."
+                    ]
+                },
+                ruido: {
+                    icono: "🔊",
+                    titulo: "Ruido del entorno",
+                    sonido: "Ruido blanco continuo",
+                    tono: "ruido",
+                    nota: "",
+                    porque: "Un sonido constante y parejo enmascara los ruidos repentinos (voces, puertas, tráfico), que son los que más capturan la atención.",
+                    consejos: [
+                        "Usa audífonos que cubran bien el oído y mantén el volumen moderado.",
+                        "Elige un solo sonido y mantenlo toda la sesión: los cambios bruscos distraen.",
+                        "Si puedes, busca un lugar fijo con menos paso de personas."
+                    ]
+                },
+                energia: {
+                    icono: "⚡",
+                    titulo: "Energía y descanso",
+                    sonido: "Música instrumental de ritmo moderado",
+                    tono: "brillante",
+                    nota: "",
+                    porque: "Un ritmo moderado y alegre, sin letra, puede darte un empujón de activación sin competir con lo que estás leyendo o escribiendo.",
+                    consejos: [
+                        "Estudia lo más difícil en el momento del día en que tengas más energía.",
+                        "Haz pausas activas de 2 a 3 minutos: estírate, camina, toma agua.",
+                        "Cuida tu sueño: dormir bien suele rendir más que una hora extra de estudio."
+                    ]
+                }
+            };
+        }
+
+        /* =====================================================
+           ESTADO Y REFERENCIAS
+           ===================================================== */
+        var idx = 0;
+        var respuestas = [];
+        var ultimoTexto = "";
+
+        function $(id) { return document.getElementById(id); }
+        var elInicio = $("dxInicio"), elPreg = $("dxPreguntas"), elRes = $("dxResultado");
+
+        function mostrar(el) {
+            [elInicio, elPreg, elRes].forEach(function (s) { s.hidden = (s !== el); });
+            el.classList.remove("dx-aparece");
+            void el.offsetWidth;
+            el.classList.add("dx-aparece");
+        }
+
+        /* =====================================================
+           PREGUNTAS
+           ===================================================== */
+        function pintarPregunta() {
+            var q = PREGUNTAS[idx];
+            var total = PREGUNTAS.length;
+            var pct = Math.round(idx / total * 100);
+
+            $("dxContador").textContent = "Pregunta " + (idx + 1) + " de " + total;
+            $("dxPorcentaje").textContent = pct + "%";
+            $("dxProgresoFill").style.width = ((idx + 1) / total * 100) + "%";
+            $("dxProgresoAria").setAttribute("aria-valuenow", String(pct));
+            $("dxEnunciado").textContent = q.t;
+            $("dxAyuda").textContent = q.a;
+
+            var cont = $("dxOpciones");
+            cont.innerHTML = "";
+            q.o.forEach(function (o, i) {
+                var b = document.createElement("button");
+                b.type = "button";
+                b.className = "dx-opcion" + (respuestas[idx] === i ? " sel" : "");
+                b.setAttribute("aria-pressed", respuestas[idx] === i ? "true" : "false");
+                var em = document.createElement("span");
+                em.className = "dx-emoji";
+                em.setAttribute("aria-hidden", "true");
+                em.textContent = o.e;
+                var tx = document.createElement("span");
+                tx.textContent = o.l;
+                b.appendChild(em);
+                b.appendChild(tx);
+                b.addEventListener("click", function () { elegir(i); });
+                cont.appendChild(b);
+            });
+        }
+
+        var bloqueado = false;
+        function elegir(i) {
+            if (bloqueado) return;
+            bloqueado = true;
+            respuestas[idx] = i;
+            var botones = $("dxOpciones").querySelectorAll(".dx-opcion");
+            botones.forEach(function (b, k) {
+                b.classList.toggle("sel", k === i);
+                b.setAttribute("aria-pressed", k === i ? "true" : "false");
+            });
+            window.setTimeout(function () {
+                bloqueado = false;
+                if (idx < PREGUNTAS.length - 1) {
+                    idx++;
+                    pintarPregunta();
+                    $("dxEnunciado").focus();
+                } else {
+                    mostrarResultado();
+                }
+            }, 240);
+        }
+
+        $("dxEmpezar").addEventListener("click", function () {
+            idx = 0;
+            respuestas = [];
+            mostrar(elPreg);
+            pintarPregunta();
+            $("dxEnunciado").focus();
+        });
+
+        $("dxAtras").addEventListener("click", function () {
+            if (bloqueado) return;
+            if (idx === 0) { mostrar(elInicio); return; }
+            idx--;
+            pintarPregunta();
+            $("dxEnunciado").focus();
+        });
+
+        /* =====================================================
+           CÁLCULO Y RESULTADO
+           ===================================================== */
+        function nivel(p) { return p >= 67 ? "alta" : (p >= 34 ? "media" : "baja"); }
+        function nivelTexto(n) { return n === "alta" ? "Prioridad alta" : (n === "media" ? "Prioridad media" : "Prioridad baja"); }
+
+        function calcular() {
+            var raw = {};
+            DIMS.forEach(function (d) { raw[d.id] = 0; });
+            var aud = true, letra = false, bloque = { min: 25, pausa: 5 };
+
+            PREGUNTAS.forEach(function (q, i) {
+                var o = q.o[respuestas[i]];
+                if (!o) return;
+                Object.keys(o.p).forEach(function (k) { raw[k] += o.p[k]; });
+                if (o.f === "letra") letra = true;
+                if (typeof o.aud === "boolean") aud = o.aud;
+                if (o.bloque) bloque = o.bloque;
+            });
+
+            var areas = DIMS.map(function (d) {
+                return { id: d.id, nombre: d.nombre, pct: Math.round(raw[d.id] / MAX[d.id] * 100) };
+            });
+            var ordenadas = areas.slice().sort(function (a, b) { return b.pct - a.pct; });
+            return { areas: areas, principal: ordenadas[0], aud: aud, letra: letra, bloque: bloque };
+        }
+
+        function mostrarResultado() {
+            detenerSonido();
+            var r = calcular();
+            var rec = recomendaciones(r.aud)[r.principal.id];
+            var solido = r.principal.pct < 25;
+
+            var titulo = solido ? "¡Tienes una base sólida!" : "Tu foco principal: " + rec.titulo;
+            var resumen = solido
+                ? "Tus respuestas muestran buenos hábitos. Para afinar aún más, te sugerimos trabajar en " + rec.titulo.toLowerCase() + "."
+                : "Según tus respuestas, esta es el área donde más puedes mejorar. Empieza por aquí y notarás la diferencia.";
+
+            var consejos = rec.consejos.slice();
+            if (r.letra) consejos.push("Cambia la música con letra por una versión instrumental: las palabras compiten con la lectura y la escritura.");
+
+            var filas = r.areas.map(function (a) {
+                var n = nivel(a.pct);
+                return '<div class="dx-fila">' +
+                    '<div class="dx-fila-top"><span>' + a.nombre + '</span><span class="dx-nivel ' + n + '">' + nivelTexto(n) + '</span></div>' +
+                    '<div class="dx-barra"><div class="dx-barra-fill ' + n + '" data-w="' + a.pct + '"></div></div>' +
+                    '</div>';
+            }).join("");
+
+            var lista = consejos.map(function (c) { return "<li>" + c + "</li>"; }).join("");
+
+            elRes.innerHTML =
+                '<div class="dx-res-cabecera">' +
+                    '<span class="dx-etiqueta">TU DIAGNÓSTICO</span>' +
+                    '<h2>' + rec.icono + ' ' + titulo + '</h2>' +
+                    '<p>' + resumen + '</p>' +
+                '</div>' +
+                '<div class="dx-grid">' +
+                    '<div class="dx-card"><h3>Tus áreas de mejora</h3>' + filas + '</div>' +
+                    '<div class="dx-card">' +
+                        '<h3>Sonido recomendado</h3>' +
+                        '<p><strong>' + rec.sonido + '</strong></p>' +
+                        '<p>' + rec.porque + '</p>' +
+                        '<div class="dx-sonido" id="dxSonido">' +
+                            '<button type="button" class="dx-play" id="dxPlay" aria-label="Escuchar un ejemplo">▶</button>' +
+                            '<div class="dx-ondas" aria-hidden="true"><span></span><span></span><span></span><span></span></div>' +
+                            '<span class="dx-nota">Ejemplo de unos segundos</span>' +
+                        '</div>' +
+                        (rec.nota ? '<p class="dx-nota" style="margin-top:8px">' + rec.nota + '</p>' : '') +
+                    '</div>' +
+                    '<div class="dx-card">' +
+                        '<h3>Tu bloque de estudio sugerido</h3>' +
+                        '<div class="dx-bloque-num">' + r.bloque.min + ' min <small>de estudio + ' + r.bloque.pausa + ' min de pausa</small></div>' +
+                        '<p style="margin-top:10px">Se basa en cuánto tiempo dices que logras concentrarte seguido. Si te va bien, sube de a 5 minutos.</p>' +
+                    '</div>' +
+                    '<div class="dx-card">' +
+                        '<h3>Hábitos que te ayudarán</h3>' +
+                        '<ul class="dx-lista">' + lista + '</ul>' +
+                    '</div>' +
+                '</div>' +
+                '<p class="dx-aviso" style="margin-top:0">Guía orientativa: los efectos del sonido varían de persona a persona y no reemplazan la valoración de un profesional si lo necesitas.</p>' +
+                '<div class="dx-acciones">' +
+                    '<button type="button" class="dx-btn" id="dxRepetir">Repetir diagnóstico</button>' +
+                    '<button type="button" class="dx-btn dx-btn-borde" id="dxCopiar">Copiar mi resultado</button>' +
+                    '<a class="dx-btn dx-btn-borde" href="recursos.html">Ver recursos</a>' +
+                    '<a class="dx-btn dx-btn-borde" href="recomendaciones.html">Ver recomendaciones</a>' +
+                    '<span class="dx-copiado" id="dxCopiado" role="status"></span>' +
+                '</div>';
+
+            // Texto para copiar
+            ultimoTexto = "Mi diagnóstico CodeWave\n" +
+                "Foco principal: " + rec.titulo + "\n" +
+                r.areas.map(function (a) { return "- " + a.nombre + ": " + nivelTexto(nivel(a.pct)) + " (" + a.pct + "%)"; }).join("\n") + "\n" +
+                "Sonido recomendado: " + rec.sonido + "\n" +
+                "Bloque sugerido: " + r.bloque.min + " min de estudio + " + r.bloque.pausa + " min de pausa\n" +
+                "Hábitos:\n" + consejos.map(function (c) { return "* " + c; }).join("\n");
+
+            mostrar(elRes);
+
+            // Animar las barras
+            window.requestAnimationFrame(function () {
+                window.requestAnimationFrame(function () {
+                    elRes.querySelectorAll(".dx-barra-fill").forEach(function (b) {
+                        b.style.width = b.getAttribute("data-w") + "%";
+                    });
+                });
+            });
+
+            $("dxPlay").addEventListener("click", function () { alternarSonido(rec.tono); });
+            $("dxRepetir").addEventListener("click", function () {
+                detenerSonido();
+                idx = 0;
+                respuestas = [];
+                mostrar(elInicio);
+                $("diagnostico").scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+            $("dxCopiar").addEventListener("click", copiarResultado);
+
+            $("diagnostico").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function copiarResultado() {
+            var msg = $("dxCopiado");
+            function ok() { msg.textContent = "¡Copiado!"; window.setTimeout(function () { msg.textContent = ""; }, 2500); }
+            function fallo() { msg.textContent = "No se pudo copiar"; }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ultimoTexto).then(ok, fallo);
+            } else {
+                try {
+                    var ta = document.createElement("textarea");
+                    ta.value = ultimoTexto;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(ta);
+                    ok();
+                } catch (e) { fallo(); }
+            }
+        }
+
+        /* =====================================================
+           SONIDO DE EJEMPLO (Web Audio API, sin archivos externos)
+           ===================================================== */
+        var ctx = null, detener = null, temporizador = null;
+
+        function obtenerCtx() {
+            if (!ctx) {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (AC) ctx = new AC();
+            }
+            return ctx;
+        }
+
+        function crearSonido(c, tono) {
+            var gain = c.createGain();
+            gain.connect(c.destination);
+
+            if (tono === "ruido") {
+                var n = 2 * c.sampleRate;
+                var buf = c.createBuffer(1, n, c.sampleRate);
+                var d = buf.getChannelData(0);
+                for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+                var src = c.createBufferSource();
+                src.buffer = buf; src.loop = true;
+                gain.gain.value = 0.04;
+                src.connect(gain); src.start();
+                return function () { src.stop(); };
+            }
+            if (tono === "binaural") {
+                var l = c.createOscillator(), rr = c.createOscillator();
+                var m = c.createChannelMerger(2);
+                l.frequency.value = 220; rr.frequency.value = 226;
+                l.connect(m, 0, 0); rr.connect(m, 0, 1);
+                gain.gain.value = 0.05;
+                m.connect(gain); l.start(); rr.start();
+                return function () { l.stop(); rr.stop(); };
+            }
+            if (tono === "brillante") {
+                var o2 = c.createOscillator();
+                o2.type = "triangle"; o2.frequency.value = 262;
+                gain.gain.value = 0.05;
+                o2.connect(gain); o2.start();
+                return function () { o2.stop(); };
+            }
+            var o = c.createOscillator();
+            o.type = "sine"; o.frequency.value = 174;
+            gain.gain.value = 0.06;
+            o.connect(gain); o.start();
+            return function () { o.stop(); };
+        }
+
+        function detenerSonido() {
+            if (temporizador) { window.clearTimeout(temporizador); temporizador = null; }
+            if (detener) { try { detener(); } catch (e) {} detener = null; }
+            var box = $("dxSonido"), play = $("dxPlay");
+            if (box) box.classList.remove("sonando");
+            if (play) play.textContent = "▶";
+        }
+
+        function alternarSonido(tono) {
+            var box = $("dxSonido"), play = $("dxPlay");
+            if (box.classList.contains("sonando")) { detenerSonido(); return; }
+            var c = obtenerCtx();
+            if (!c) return;
+            if (c.state === "suspended") c.resume();
+            detener = crearSonido(c, tono);
+            box.classList.add("sonando");
+            play.textContent = "❚❚";
+            temporizador = window.setTimeout(detenerSonido, 8000);
+        }
+    })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEWAVE - Inicio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-inicio">
+    <!-- HEADER (compartido) -->
+    <header>
+        <div class="logo-container">
+            <img src="34055.png" alt="Logo CodeWave" class="logo">
+            <span class="slogan">Musica Que Optimiza El Aprendizaje</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="formulario.html">Diagnóstico</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="recomendaciones.html">Recomendaciones</a></li>
+                <li><a href="contactos.html">Contacto</a></li>
+                <li><a href="reproductor.html"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO: INICIO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">BIENVENIDO</h1>
+                <p class="hero-intro">En codewave te ayudamos a recuperar el control de tu tiempo. Con recursos practicos, herramientas y una comunidad que te acompaña, convierte cada "lo hago despues" en un "lo hago ahora". Descubre tecnicas para organizarte, mantener la motivacion y avanzar hacia tus metas.</p>
+            </div>
+            <!-- CARRUSEL: para agregar una imagen, copia un bloque .carrusel-slide
+                 y agrega también un botón .carrusel-punto -->
+            <div class="banner-carrusel" aria-roledescription="carrusel" aria-label="Imágenes destacadas">
+                <div class="carrusel-ventana">
+                    <div class="carrusel-pista">
+                        <div class="carrusel-slide">
+                            <img src="img musica.avif" alt="Imagen 1 del carrusel">
+                        </div>
+                        <div class="carrusel-slide">
+                            <img src="img musica2.webp" alt="Imagen 2 del carrusel">
+                        </div>
+                        <div class="carrusel-slide">
+                            <img src="img musica3.webp" alt="Imagen 3 del carrusel">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="carrusel-flecha carrusel-flecha-izq" aria-label="Imagen anterior">‹</button>
+                <button type="button" class="carrusel-flecha carrusel-flecha-der" aria-label="Imagen siguiente">›</button>
+
+                <div class="carrusel-puntos">
+                    <button type="button" class="carrusel-punto activo" aria-label="Ir a la imagen 1"></button>
+                    <button type="button" class="carrusel-punto" aria-label="Ir a la imagen 2"></button>
+                    <button type="button" class="carrusel-punto" aria-label="Ir a la imagen 3"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (compartido) -->
+    <footer>
+        <div class="footer-bottom">
+            <p>Medellín, Colombia | 2026 CodeWave</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         JS EMBEBIDO
+         1) Carrusel (flechas, puntos, autoplay, deslizar con el dedo)
+         2) Aparición suave del texto y del carrusel al hacer scroll
+         3) Botón flotante "subir arriba"
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* ---- 1) CARRUSEL ---- */
+            const INTERVALO_MS = 5000;   // <- cada cuánto cambia solo (5000 = 5 segundos)
+
+            const carrusel = document.querySelector('.banner-carrusel');
+            const pista    = carrusel.querySelector('.carrusel-pista');
+            const slides   = carrusel.querySelectorAll('.carrusel-slide');
+            const puntos   = carrusel.querySelectorAll('.carrusel-punto');
+            const btnIzq   = carrusel.querySelector('.carrusel-flecha-izq');
+            const btnDer   = carrusel.querySelector('.carrusel-flecha-der');
+            const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let actual = 0;
+            let temporizador = null;
+
+            function irA(indice) {
+                actual = (indice + slides.length) % slides.length;   // da la vuelta al llegar al final
+                pista.style.transform = `translateX(-${actual * 100}%)`;
+                puntos.forEach((punto, i) => {
+                    punto.classList.toggle('activo', i === actual);
+                });
+            }
+
+            function iniciarAutoplay() {
+                if (sinMovimiento) return;          // respeta a quien pidió menos animaciones
+                detenerAutoplay();
+                temporizador = setInterval(() => irA(actual + 1), INTERVALO_MS);
+            }
+
+            function detenerAutoplay() {
+                clearInterval(temporizador);
+            }
+
+            btnIzq.addEventListener('click', () => { irA(actual - 1); iniciarAutoplay(); });
+            btnDer.addEventListener('click', () => { irA(actual + 1); iniciarAutoplay(); });
+            puntos.forEach((punto, i) => {
+                punto.addEventListener('click', () => { irA(i); iniciarAutoplay(); });
+            });
+
+            // se pausa mientras el mouse o el teclado están sobre el carrusel
+            carrusel.addEventListener('mouseenter', detenerAutoplay);
+            carrusel.addEventListener('mouseleave', iniciarAutoplay);
+            carrusel.addEventListener('focusin', detenerAutoplay);
+            carrusel.addEventListener('focusout', iniciarAutoplay);
+
+            // deslizar con el dedo en celulares
+            let inicioX = 0;
+            carrusel.addEventListener('touchstart', (e) => {
+                inicioX = e.touches[0].clientX;
+            }, { passive: true });
+            carrusel.addEventListener('touchend', (e) => {
+                const diferencia = e.changedTouches[0].clientX - inicioX;
+                if (Math.abs(diferencia) > 40) {
+                    irA(diferencia < 0 ? actual + 1 : actual - 1);
+                    iniciarAutoplay();
+                }
+            }, { passive: true });
+
+            irA(0);
+            iniciarAutoplay();
+
+
+            /* ---- 2) Aparición suave al hacer scroll ---- */
+            const elementosRevelables = [
+                document.querySelector('.hero-text'),
+                carrusel
+            ].filter(Boolean);
+
+            elementosRevelables.forEach((el, i) => {
+                el.classList.add('fade-in-elemento');
+                el.style.transitionDelay = `${i * 0.08}s`;
+            });
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entradas) => {
+                    entradas.forEach(entrada => {
+                        if (entrada.isIntersecting) {
+                            entrada.target.classList.add('visible');
+                            observer.unobserve(entrada.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                elementosRevelables.forEach(el => observer.observe(el));
+            } else {
+                elementosRevelables.forEach(el => el.classList.add('visible'));
+            }
+
+
+            /* ---- 3) Botón flotante "subir arriba" ---- */
+            const botonSubir = document.createElement('button');
+            botonSubir.className = 'boton-subir';
+            botonSubir.type = 'button';
+            botonSubir.setAttribute('aria-label', 'Volver arriba');
+            botonSubir.textContent = '↑';
+            document.body.appendChild(botonSubir);
+
+            window.addEventListener('scroll', () => {
+                botonSubir.classList.toggle('visible', window.scrollY > 400);
+            });
+
+            botonSubir.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODEWAVE - Reproductor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-reproductor">
+    <!-- HEADER (compartido) -->
+    <header>
+        <div class="logo-container">
+            <img src="34055.png" alt="Logo CodeWave" class="logo">
+            <span class="slogan">Musica Que Optimiza El Aprendizaje</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="formulario.html">Diagnóstico</a></li>
+                <li><a href="recursos.html">Recursos</a></li>
+                <li><a href="recomendaciones.html">Recomendaciones</a></li>
+                <li><a href="contactos.html">Contacto</a></li>
+                <li><a href="reproductor.html" class="active"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="reproductor-hero">
+        <div class="hero-texto">
+            <span class="hero-etiqueta">CODEWAVE • REPRODUCTOR</span>
+            <h1>Escucha aquí</h1>
+            <p>
+                Ejemplos de cada tipo de música o sonido recomendado,
+                reproducidos directamente en la página.
+            </p>
+        </div>
+        <div class="hero-decoracion">♫</div>
+    </section>
+
+    <!-- CONTENIDO: UN REPRODUCTOR POR CADA TIP -->
+    <main class="reproductor-panel">
+
+        <a href="recomendaciones.html" class="volver-recomendaciones">← Volver a recomendaciones</a>
+
+        <!--
+            IMPORTANTE PARA CAMILO (esto es un comentario, no se ve en la página):
+            Cada <audio> apunta a un archivo dentro de la carpeta "audio/".
+            Esa carpeta todavía no existe: hay que crearla al lado de este HTML
+            y poner ahí los archivos .mp3 con esos nombres exactos, o cambiar
+            el "src" por el nombre real del archivo que uses.
+            Ver la explicación completa en la conversación con Claude.
+        -->
+
+        <article class="pista" id="tip1">
+            <div class="pista-icono">🎻</div>
+            <div class="pista-info">
+                <h2>Beethoven Symphony 9</h2>
+                <p>Ideal para estudiar y leer con concentración prolongada.</p>
+                <audio controls preload="none">
+                    <source src="musica clasica/Beethoven Symphony 9 Op 125 Clockwork Orange.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip1">
+            <div class="pista-icono">🎻</div>
+            <div class="pista-info">
+                <h2>Beethoven Moonlight Sonata,  III</h2>
+                <p>Ideal para estudiar y leer con concentración prolongada.</p>
+                <audio controls preload="none">
+                    <source src="musica clasica/Beethoven Moonlight Sonata,  III Presto Agitato Valentina Lisitsa - Valentina Lisitsa QOR Records Official channel.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip1">
+            <div class="pista-icono">🎻</div>
+            <div class="pista-info">
+                <h2>Chopin - Nocturne op.9 </h2>
+                <p>Ideal para estudiar y leer con concentración prolongada.</p>
+                <audio controls preload="none">
+                    <source src="musica clasica/Chopin - Nocturne op.9 No.2 - andrea romano.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip1">
+            <div class="pista-icono">🎻</div>
+            <div class="pista-info">
+                <h2>Wolfgang Amadeus Mozart - Piano</h2>
+                <p>Ideal para estudiar y leer con concentración prolongada.</p>
+                <audio controls preload="none">
+                    <source src="musica clasica/Wolfgang Amadeus Mozart - Piano Concerto No. 21 - Andante - poloshia.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip2">
+            <div class="pista-icono">☕</div>
+            <div class="pista-info">
+                <h2>Lo-fi Type Beat - Rain</h2>
+                <p>Perfecta para tareas repetitivas y trabajo administrativo.</p>
+                <audio controls preload="none">
+                    <source src="lo-fi/(FREE) Lo-fi Type Beat - Rain.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip2">
+            <div class="pista-icono">☕</div>
+            <div class="pista-info">
+                <h2>MUSICA LOFI</h2>
+                <p>Perfecta para tareas repetitivas y trabajo administrativo.</p>
+                <audio controls preload="none">
+                    <source src="lo-fi/MUSICA LOFI (Sin Copyright) #25 🍵 - Música Sin Copyright.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip2">
+            <div class="pista-icono">☕</div>
+            <div class="pista-info">
+                <h2>MUSICA LOFI HIP HOP</h2>
+                <p>Perfecta para tareas repetitivas y trabajo administrativo.</p>
+                <audio controls preload="none">
+                    <source src="lo-fi/☕ MÚSICA LOFI HIP HOP (Sin Copyright) #50 [Calmada y Kawaii] - Música Sin Copyright.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip2">
+            <div class="pista-icono">☕</div>
+            <div class="pista-info">
+                <h2>Chillhop Lofi Beats</h2>
+                <p>Perfecta para tareas repetitivas y trabajo administrativo.</p>
+                <audio controls preload="none">
+                    <source src="lo-fi/🎵 Chillhop Lofi Beats (Music For Videos) - Fashion by Alex Productions 🇮🇹 - BreakingCopyright — Royalty Free Music.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip3">
+            <div class="pista-icono">🌿</div>
+            <div class="pista-info">
+                <h2>Agua de Río Fluyendo</h2>
+                <p>Lluvia, olas del mar o viento entre árboles para relajarte.</p>
+                <audio controls preload="none">
+                    <source src="naturaleza/Agua de Río Fluyendo.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip3">
+            <div class="pista-icono">🌿</div>
+            <div class="pista-info">
+                <h2>Sonidos de Lluvia relajante</h2>
+                <p>Lluvia, olas del mar o viento entre árboles para relajarte.</p>
+                <audio controls preload="none">
+                    <source src="naturaleza/DORMIR RAPIDO y PROFUNDO en menos de 5 MINUTOS con sonido de LLUVIA RELAJANTE [HD] - Música para dormir, estudiar & meditar.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip3">
+            <div class="pista-icono">🌿</div>
+            <div class="pista-info">
+                <h2>Sonido relajante de la naturaleza</h2>
+                <p>Lluvia, olas del mar o viento entre árboles para relajarte.</p>
+                <audio controls preload="none">
+                    <source src="naturaleza/musica relajante corta naturaleza, musica relajante corta duracion - Meditate.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip3">
+            <div class="pista-icono">🌿</div>
+            <div class="pista-info">
+                <h2>Sonido de Lluvia Corto</h2>
+                <p>Lluvia, olas del mar o viento entre árboles para relajarte.</p>
+                <audio controls preload="none">
+                    <source src="naturaleza/🌧️ RELAJANTE Sonido de Lluvia Corto (1 MINUTO) Efecto Blanco ASMR de Lluvia para Dormir y Relajarse - Naturaleza Nítida.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip4">
+            <div class="pista-icono">🌙</div>
+            <div class="pista-info">
+                <h2>Ondas binaurales - Theta (4-8 Hz)</h2>
+                <p>Favorecen la meditación y la relajación profunda.</p>
+                <audio controls preload="none">
+                    <source src="ondas theta/THETA WAVES 4-8 Hz Meditación Profunda, Ensueño y Flujo Subconsciente, Música con Ondas Theta.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip5">
+            <div class="pista-icono">⚡</div>
+            <div class="pista-info">
+                <h2>Ondas binaurales - Gamma (40 Hz)</h2>
+                <p>Apoyan la resolución de problemas complejos y la programación.</p>
+                <audio controls preload="none">
+                    <source src="ondas gamma/Caleidoscopio de ondas gamma de 40 Hz de frecuencia produce concentración, calma y felicidad.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+        <article class="pista" id="tip6">
+            <div class="pista-icono">✍️</div>
+            <div class="pista-info">
+                <h2>Música instrumental sin letra</h2>
+                <p>Mantiene el hilo al escribir textos, ensayos o código.</p>
+                <audio controls preload="none">
+                    <source src="instrumental/Él Me Levantará Piano Heaven Instrumental Música para Meditar Música Para Orar.mp3" type="audio/mpeg">
+                    Tu navegador no soporta la reproducción de audio.
+                </audio>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- FOOTER (compartido) -->
+    <footer>
+        <div class="footer-bottom">
+            <p>Medellín, Colombia | 2026 CodeWave</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         JS: muestra SOLO la pista correspondiente al hash de la URL (#tip1,
+         #tip2, etc.). Si no hay hash o no coincide con ninguna pista, se
+         muestran todas (por ejemplo si alguien entra directo a
+         reproductor.html sin venir de un botón "Escuchar").
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pistas = document.querySelectorAll('.pista');
+
+            function aplicarFiltro() {
+                const hash = window.location.hash.replace('#', '');
+                const hayCoincidencia = hash && document.getElementById(hash);
+
+                pistas.forEach(pista => {
+                    const debeMostrarse = !hayCoincidencia || pista.id === hash;
+                    pista.style.display = debeMostrarse ? 'flex' : 'none';
+                });
+            }
+
+            aplicarFiltro();
+            // por si el usuario navega entre hashes sin recargar (atrás/adelante del navegador)
+            window.addEventListener('hashchange', aplicarFiltro);
+        });
+    </script>
+</body>
+</html>
